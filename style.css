@@ -1,0 +1,177 @@
+.header {
+    position: fixed;
+    width:100%;
+    background-color: royalblue;
+    max-width: 100%;
+    top: 0px;
+    left: 0px;
+}
+
+.body1 {
+    color: whitesmoke;
+    margin-top: 200px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.title {
+    font-size: 60px;
+    margin-bottom:0%;
+    margin-top: 0%;
+    margin-left: 3px;
+    color: whitesmoke;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.titleMain {
+    font-size: 60px;
+    margin-bottom:0%;
+    margin-top: 0%;
+    margin-left: 3px;
+    color: whitesmoke;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+}
+
+
+.subtitle {
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 0%;
+    margin-left: 3px;
+    color: whitesmoke;
+}
+
+body {
+    background-image: url("gradient-blue-background.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+.disclaimer {
+    font-style: italic;
+    font-size: 16px;
+    color: white;
+    bottom: 0%;
+    position: fixed;
+    text-align:center;
+}
+
+a.button{
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: royalblue;
+    display: inline-block;
+}
+a.clickedbutton{
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    text-decoration: none;
+    color: white;
+    background-color: rgb(51, 93, 219);
+}
+a.button:link {
+    text-decoration: none;
+    color: white;
+}
+
+a.button:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a.button:hover {
+    text-decoration: none;
+    background-color: rgb(74, 112, 226);
+}
+
+.formInit{
+    color: whitesmoke;
+    margin-top: 10px;
+    text-align: center;
+    
+}
+
+.formTable{
+    color: whitesmoke;
+    margin-top: 400px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.outputTableClass{
+    color: whitesmoke;
+    text-align: center;
+}
+
+.displayTable {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 300px;
+}
+  
+.displayTable td, .displayTable th {
+    text-align: center;
+    color: white;
+}
+ 
+.displayTable tr:nth-child(odd){
+    text-align: center;
+    background-color: royalblue;    
+    color: white;
+}
+
+.displayTable tr:nth-child(even){
+    text-align: center;
+    background-color: rgb(74, 112, 226);
+    color: white;
+}
+  
+.displayTable tr:hover {
+    background-color: rgb(22, 62, 184);
+}
+  
+.displayTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    color: white;
+    background-color: rgb(51, 93, 219);
+}
+
+img {
+    border: 20px solid royalblue;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.miniFooter {
+    font-style: italic;
+    font-size: 16px;
+    color: white;
+    bottom: 0%;
+    position: fixed;
+    text-align:center;
+}
+
+.bioSection {
+    color: whitesmoke;
+    margin-top: 100px;
+    text-align: center;
+}
+
+
+a:link {color:#F0FFFF;}
+
+a:visited {color:#FFFAF0;}
+
+a:hover {color:#F5FFFA;} 
+
+a:active {color:#F8F8FF;} 
