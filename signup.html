@@ -1,0 +1,52 @@
+<html lang='en'>
+   <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Signup">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Senior Capstone I</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    
+   <body>
+        <div class="header">
+            <h1 class="title">The Collaboritive Site</h1>
+            <p class="subtitle">For Senior Capstone</p>
+            <a class="button" href="index.html">Home</a>
+			<a class="clickedbutton" href="signup.html">Sign-Up</a>
+        </div>
+        <div class='signUp'>
+            <form method='post' onsubmit='return submitCheck()'>
+                <h1>SIGN UP</h1>
+                <label> First Name: </label>
+                <input type='text' id='firstName' name='firstName' placeholder='required' required>
+                <br>
+                <br>
+                <label> Last Name: </label>
+                <input type='text' id='lastName' name='lastName' placeholder='required' required>
+                <br>
+                <br>
+                <label> Email Address: </label>
+                <input type='email' id='email' name='email' placeholder='required' required>
+                <br>
+                <br>
+                <label> Password: </label>
+                <input type='password' id='pword' name='pword' placeholder='required' required>
+                <br>
+                <br>
+                <label> State: </label>
+                <input type='text' id='state' name='state' maxlength='2'>
+                <br>
+                <br>
+                <label> Zip: </label>
+                <input type='number' id='zip' name='zip' maxlength='5' size='5'>
+                <br>
+                <p>
+                    <input class='formButton' type ='submit' value ='Sign Up'>
+                    <input class='formButton' type ='reset' value ='Clear'>
+                </p>
+           </form> 
+        </div>
+        <p class='disclaimer'>this is a project and not an actual store</p>
+   </body>
+</html>
