@@ -1,3 +1,5 @@
+//script to read the user inputs
+
 function submitCheck()
             {
                 if (window.confirm('Are you sure you want to submit?') == true)
