@@ -50,13 +50,8 @@ CREATE TABLE report(
 CREATE TABLE email_template(
     tmplt_id INT AUTO_INCREMENT PRIMARY KEY,
     tmplt_subject VARCHAR(100),
-    tmplt_body LONGTEXT
-);
-
-CREATE TABLE scheduled_email(
-    sch_email_id INT AUTO_INCREMENT PRIMARY KEY,
-    tmplt_id INT,
-    FOREIGN KEY (tmplt_id) REFERENCES email_template(tmplt_id)
+    tmplt_body LONGTEXT,
+    scheduled_email DATE
 );
 
 CREATE TABLE email_to_student(
