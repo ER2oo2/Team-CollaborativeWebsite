@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Students</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <img src="PennWestLogo.png" alt="PennWest University Logo">
+    <span>PennWest Financial Aid Veteran’s Database</span>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="search.html">Search</a>
+    <a href="newrecord.html">New Record</a>
+    <a href="email.html">Email</a>
+    <a href="reports.html">Reports</a>
+    &ensp;&ensp;&ensp;&ensp;<a href="login.html">Login</a>
+    <a href="#logout">| Logout</a>
+</nav>
+
+<main>
+    <div class="search-container">
+        <h2>Search Students</h2>
+        <form action="#" method="post" class="search-form">
+            
+            <!-- Search by Name -->
+            <div class="form-group">
+                <input type="radio" id="search-by-name" name="search-option" value="name">
+                <label for="search-by-name">Search by Student Name:</label>
+		<br>&ensp;&ensp;&ensp;&ensp;
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" placeholder="Enter first name">
+                <br>&ensp;&ensp;&ensp;&ensp;
+		<label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" placeholder="Enter last name">
+            </div>
+            
+            <!-- Search by Student ID -->
+            <div class="form-group">
+                <input type="radio" id="search-by-id" name="search-option" value="id">
+                <label for="search-by-id">Search by Student ID:</label>
+                <input type="text" id="student-id" name="student-id" placeholder="Enter student ID">
+            </div>
+            
+            <!-- Search for Non-Certified Students for Current Semester -->
+            <div class="form-group">
+                <input type="radio" id="search-non-certified" name="search-option" value="non-certified">
+                <label for="search-non-certified">Search for Non-Certified Students for Current Semester</label>
+            </div>
+            
+            <!-- Single Search Button -->
+            <button type="submit" class="option-button">Search</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    Pennsylvania Western University
+</footer>
+
+</body>
+</html>

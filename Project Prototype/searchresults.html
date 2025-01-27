@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // JavaScript function to toggle all checkboxes
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('input[name="select-student[]"]');
+            checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <img src="PennWestLogo.png" alt="PennWest University Logo">
+    <span>PennWest Financial Aid Veteran’s Database</span>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="search.html">Search</a>
+    <a href="newrecord.html">New Record</a>
+    <a href="email.html">Email</a>
+    <a href="reports.html">Reports</a>
+    &ensp;&ensp;&ensp;&ensp;<a href="login.html">Login</a>
+    <a href="#logout">| Logout</a>
+</nav>
+
+<main>
+    <div class="results-container">
+        <h2>Search Results</h2>
+        <form action="#" method="post">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Certified</th>
+                        <th>
+                            Select All<br>
+                            <input type="checkbox" onclick="toggleSelectAll(this)"> 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample Entries with checkboxes for selection -->
+                    <tr><td><a href="#details">1299988</a></td><td><a href="#details">Doe</a></td><td><a href="#details">John</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299988"></td></tr>
+                    <tr><td><a href="#details">1299989</a></td><td><a href="#details">Smith</a></td><td><a href="#details">Jane</a></td><td><a href="#details">N</a></td><td><input type="checkbox" name="select-student[]" value="1299989"></td></tr>
+                    <tr><td><a href="#details">1299990</a></td><td><a href="#details">Johnson</a></td><td><a href="#details">Michael</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299990"></td></tr>
+                    <tr><td><a href="#details">1299991</a></td><td><a href="#details">Brown</a></td><td><a href="#details">Sarah</a></td><td><a href="#details">N</a></td><td><input type="checkbox" name="select-student[]" value="1299991"></td></tr>
+                    <tr><td><a href="#details">1299992</a></td><td><a href="#details">Williams</a></td><td><a href="#details">David</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299992"></td></tr>
+                    <tr><td><a href="#details">1299993</a></td><td><a href="#details">Jones</a></td><td><a href="#details">Emily</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299993"></td></tr>
+                    <tr><td><a href="#details">1299994</a></td><td><a href="#details">Garcia</a></td><td><a href="#details">Robert</a></td><td><a href="#details">N</a></td><td><input type="checkbox" name="select-student[]" value="1299994"></td></tr>
+                    <tr><td><a href="#details">1299995</a></td><td><a href="#details">Martinez</a></td><td><a href="#details">Maria</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299995"></td></tr>
+                    <tr><td><a href="#details">1299996</a></td><td><a href="#details">Rodriguez</a></td><td><a href="#details">James</a></td><td><a href="#details">N</a></td><td><input type="checkbox" name="select-student[]" value="1299996"></td></tr>
+                    <tr><td><a href="#details">1299997</a></td><td><a href="#details">Davis</a></td><td><a href="#details">Patricia</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299997"></td></tr>
+                    <tr><td><a href="#details">1299998</a></td><td><a href="#details">Lopez</a></td><td><a href="#details">Christopher</a></td><td><a href="#details">N</a></td><td><input type="checkbox" name="select-student[]" value="1299998"></td></tr>
+                    <tr><td><a href="#details">1299999</a></td><td><a href="#details">Gonzalez</a></td><td><a href="#details">Linda</a></td><td><a href="#details">Y</a></td><td><input type="checkbox" name="select-student[]" value="1299999"></td></tr>
+                </tbody>
+            </table>
+            <!-- Submit Button Below the Table -->
+            <button type="submit" class="option-button" style="margin-top: 20px;">Submit</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    Pennsylvania Western University
+</footer>
+
+</body>
+</html>
