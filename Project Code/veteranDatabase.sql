@@ -2,7 +2,7 @@
   Database: PennWest Military and Veteran Student Success Database
   File: veteranDatabase.sql
   Description: This file contains SQL statements to create and initialize 
-               the database schema for the PennWest Military and Veteran Student Success Database
+     the database schema for the PennWest Military and Veteran Student Success Database
   */
 
 CREATE TABLE student(
