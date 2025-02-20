@@ -1,23 +1,25 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #e6f7ff; /* Very light blue for main body */
+    background-color: #e6f7ff;
 }
 
+/* Header, Navigation, and Footer Styles */
 header, nav, footer {
     padding: 10px;
     color: white;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 header {
-    background-color: #666; /* Lighter shade of gray */
+    background-color: #666; /* Lighter gray */
     font-size: 1.5em;
-    justify-content: center;
 }
 
 header img {
@@ -25,10 +27,12 @@ header img {
     margin-right: 10px;
 }
 
-nav {
+nav, footer {
     background-color: #001f3f; /* Dark navy blue */
+}
+
+nav {
     font-size: 1.2em;
-    justify-content: center;
 }
 
 nav a {
@@ -41,112 +45,96 @@ nav a:hover {
     text-decoration: underline;
 }
 
+/* Main Content */
 main {
     flex-grow: 1;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Aligns content to the top */
-    padding: 90px; /* Adds extra padding at the top */
+    align-items: flex-start;
+    padding: 90px;
 }
 
-
-.login-form {
-    width: 300px;
+/* Form Containers */
+.login-form, .form-container, .student-record-container, .email-form-container, .report-parameters-container, .report-results-container {
+    width: 50%;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f9f9f9;
 }
 
-.login-form h2 {
+/* Headings */
+.login-form h2, .options-container h2 {
     text-align: center;
     margin-top: 0;
 }
 
-.login-form label {
+/* Form Inputs and Labels */
+.login-form label, .email-form label, .report-parameters-form label {
     display: block;
-    margin: 10px 0 5px;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .login-form input[type="text"],
-.login-form input[type="password"] {
+.login-form input[type="password"],
+.email-form input[type="text"],
+.email-form select,
+.email-form textarea,
+.report-parameters-form input[type="date"],
+.report-parameters-form select {
     width: 100%;
     padding: 8px;
-    margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.login-form button {
+.email-form textarea {
+    resize: vertical;
+}
+
+/* Buttons */
+button, .option-button, .email-button {
+    display: block;
     width: 100%;
     padding: 10px;
-    background-color: #001f3f; /* Same dark navy blue as the navigation bar */
+    background-color: #001f3f;
     color: white;
     border: none;
     border-radius: 4px;
+    font-size: 1em;
     cursor: pointer;
-}
-
-.login-form button:hover {
-    background-color: #003366; /* Slightly lighter blue for hover effect */
-}
-
-footer {
-    background-color: #001f3f; /* Dark navy blue, same as nav */
     text-align: center;
+    margin-top: 10px;
 }
 
-.options-container {
-    text-align: center;
-    padding: 20px;
+button:hover, .option-button:hover, .email-button:hover {
+    background-color: #003366; /* Slightly lighter blue */
 }
 
-.options-container h2 {
-    margin-bottom: 20px;
-    font-size: 1.8em;
-    color: #333;
-}
-
+/* Option Buttons */
 .option-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.option-button {
-    display: block;
-    width: 200px;
-    padding: 10px;
-    margin: 10px 0;
-    background-color: #001f3f; /* Dark navy blue */
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.option-button:hover {
-    background-color: #003366; /* Slightly lighter blue for hover effect */
-}
-
-.results-container {
+/* Results and Tables */
+.results-container, .report-summary {
     padding: 20px;
     text-align: center;
 }
 
 table {
     width: 80%;
-    margin: 0 auto;
+    margin: 20px auto 0;
     border-collapse: collapse;
 }
 
 table, th, td {
     border: 1px solid #ddd;
-}
-
-th, td {
     padding: 10px;
     text-align: center;
 }
@@ -161,232 +149,9 @@ tr:hover {
     cursor: pointer;
 }
 
+/* Links */
 a {
     color: inherit;
     text-decoration: none;
     display: block;
 }
-.form-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.new-record-form .form-group {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.new-record-form .form-group label {
-    width: 150px; /* Set a fixed width to align inputs */
-    text-align: right;
-    margin-right: 10px;
-}
-
-.new-record-form .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-.student-record-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.student-details p {
-    margin: 8px 0;
-    font-size: 1em;
-}
-
-.email-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #001f3f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.email-button:hover {
-    background-color: #003366;
-}
-.email-form-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.preselected-students {
-    margin-bottom: 20px;
-    background-color: #eef;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.email-form .form-group {
-    margin-bottom: 15px;
-}
-
-.email-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.email-form input[type="text"],
-.email-form select,
-.email-form textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.email-form textarea {
-    resize: vertical;
-}
-
-.option-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #001f3f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.option-button:hover {
-    background-color: #003366;
-}
-
-.report-parameters-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.report-parameters-form .form-group {
-    margin-bottom: 15px;
-}
-
-.report-parameters-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.report-parameters-form input[type="date"],
-.report-parameters-form select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.option-button {
-    display: inline-block;
-    width: 100%;
-    padding: 10px;
-    background-color: #001f3f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.option-button:hover {
-    background-color: #003366;
-}
-
-.report-actions {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.report-results-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.report-summary {
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #001f3f;
-    color: white;
-}
-
-.results-actions {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.option-button {
-    display: inline-block;
-    padding: 10px;
-    background-color: #001f3f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    cursor: pointer;
-    margin: 10px;
-}
-
-.option-button:hover {
-    background-color: #003366;
-}
-
-
