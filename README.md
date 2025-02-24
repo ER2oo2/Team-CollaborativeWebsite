@@ -9,14 +9,16 @@ ERD Updated
 ###SPRINT 2
 ##NEW FEATURE
 
-#ENTRY SCRIPTS
-certyEntry.sql
-emailEntry.sql
-staffEntry.sql
-studentEntry.sql
+#NEW HTML FILES
+email.html
+index.html
+login.html
+newrecord.html
+reportresults.html
+reports.html
+search.html
+searchresults.html
+studentrecord.html
 
-#SELECT SCRIPTS
-selectStatements.sql
-
-#UPDATE SCRIPTS
-studentUpdate.sql
+#CSS STYLE GUIDE
+style.css
