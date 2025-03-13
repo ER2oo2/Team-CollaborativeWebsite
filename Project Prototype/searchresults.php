@@ -1,6 +1,6 @@
 <?php
 
-require_once 'dbconnect.php';
+require_once('dbconnect.php');
 
 //validate if there is a session, if not- start one
 if (session_status() == PHP_SESSION_NONE) { 
