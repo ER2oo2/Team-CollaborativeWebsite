@@ -22,3 +22,9 @@ studentrecord.html
 
 #CSS STYLE GUIDE
 style.css
+
+###SPRINT 3
+##NEW FEATURE
+All php code completed. This will allow interaction with
+the database and access to student, certificaiton, and 
+faculty information. 
