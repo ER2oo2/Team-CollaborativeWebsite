@@ -1,7 +1,7 @@
 <?php
-  $dsn1 = 'mysql:host=devweb1.cis.pennwest.edu; port=8443;dbname=vafinaid';
-    $username1 = 'GUF16812';
-    $password1 = 'EPz0sYC9A';
+  $dsn1 = 'mysql:host=devweb1.cis.pennwest.edu;port=8443;dbname=vafinaid';
+    $username1 = '';
+    $password1 = '';
 	$status = '';
    	
     try {

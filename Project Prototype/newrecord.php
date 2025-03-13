@@ -79,7 +79,7 @@ if (isset($_POST['student-id'])) {
 
 <nav>
     <a href="index.html">Home</a>
-    <a href="search.html">Search</a>
+    <a href="search.php">Search</a>
     <a href="newrecord.html">New Record</a>
     <a href="email.html">Email</a>
     <a href="reports.html">Reports</a>
