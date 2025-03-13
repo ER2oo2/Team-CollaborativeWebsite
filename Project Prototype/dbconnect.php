@@ -1,5 +1,6 @@
 <?php
-  $dsn1 = 'mysql:host=devweb1.cis.pennwest.edu;port=8443;dbname=vafinaid';
+
+  $dsn1 = 'mysql:host=localhost;dbname=vafinaid';
     $username1 = '';
     $password1 = '';
 	$status = '';
