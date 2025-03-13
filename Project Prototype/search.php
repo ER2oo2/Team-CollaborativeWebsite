@@ -31,10 +31,10 @@ if (isset($_POST['search-option'])) {
        //sql code to search by name
        $query = 'SELECT * FROM student WHERE stu_fname LIKE :firstName and stu_lname LIKE :lastName';
        $statement = $db->prepare($query);
-       $statement->bindParam(':firstName', $first_name);
-       $statement->bindParam(':lastName', $last_name); 
+       $statement->bindParam(':firstName', '%'. $first_name. '%');
+       $statement->bindParam(':lastName', '%'.$last_name.'%'); 
        $statement->execute();
-       $student = $statement->fetch();
+       $student = $statement->fetchAll();
        $statement->closeCursor();
 
     } elseif ($searchOption == 'id') {
@@ -45,7 +45,7 @@ if (isset($_POST['search-option'])) {
         $statement = $db->prepare($query);
         $statement->bindParam(':student_id', $student_id);
         $statement->execute();
-        $student = $statement->fetch();
+        $student = $statement->fetchAll();
         $statement->closeCursor();
 
     } elseif ($searchOption == 'non-certified') {
@@ -56,16 +56,22 @@ if (isset($_POST['search-option'])) {
                     WHERE certification.cert_status = 0 or certification.cert_status IS NULL';
         $statement = $db->prepare($query);
         $statement->execute();
-        $students = $statement->fetchAll();
+        $student = $statement->fetchAll();
         $statement->closeCursor();
     }
 
-    //save serach results to session
-    $_SESSION['searchResults'] = $students;
+
 
     //redirect to search results page
-    header('Location: searchResults.php');
-    exit();
+    if(empty($student)){
+        echo "No results found. Check your search criteria and try again.";
+        exit();
+    } else {
+        //save serach results to session
+        $_SESSION['searchResults'] = $student;
+        header('Location: searchresults.php');
+        exit();
+    }
   
 }
 
@@ -100,7 +106,7 @@ if (isset($_POST['search-option'])) {
 <main>
 <div class="search-container">
         <h2>Search Students</h2>
-        <form action="#" method="post" class="search-form">
+        <form action="search.php" method="post" class="search-form">
             
             <!-- Search by Name -->
             <div class="form-group">

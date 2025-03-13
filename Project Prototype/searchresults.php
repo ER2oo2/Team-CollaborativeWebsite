@@ -20,7 +20,7 @@ if (isset($_SESSION['user_session'])) {
 }
 
 //retrieve search results from session
-$students = isset($_SESSION['search-results']) ? $_SESSION['search-results'] : [];
+$students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
     
 ?>
 
