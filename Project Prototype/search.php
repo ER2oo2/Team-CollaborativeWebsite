@@ -1,4 +1,9 @@
 <?php
+ob_start();
+session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 //connect to database
 require_once('dbconnect.php');
 
@@ -31,8 +36,10 @@ if (isset($_POST['search-option'])) {
        //sql code to search by name
        $query = 'SELECT * FROM student WHERE stu_fname LIKE :firstName and stu_lname LIKE :lastName';
        $statement = $db->prepare($query);
-       $statement->bindParam(':firstName', '%'. $first_name. '%');
-       $statement->bindParam(':lastName', '%'.$last_name.'%'); 
+       $first_name_wildcard = '%'.$first_name.'%';
+       $last_name_wildcard = '%'.$last_name.'%';
+       $statement->bindParam(':firstName', $first_name_wildcard);
+       $statement->bindParam(':lastName', $last_name_wildcard); 
        $statement->execute();
        $student = $statement->fetchAll();
        $statement->closeCursor();
@@ -145,3 +152,4 @@ if (isset($_POST['search-option'])) {
 
 </body>
 </html>
+<?php ob_end_flush(); ?>

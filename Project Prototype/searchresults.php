@@ -1,5 +1,4 @@
 <?php
-
 require_once('dbconnect.php');
 
 //validate if there is a session, if not- start one
@@ -20,7 +19,7 @@ if (isset($_SESSION['user_session'])) {
 }
 
 //retrieve search results from session
-$students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
+$student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
     
 ?>
 
@@ -74,7 +73,7 @@ $students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($students as $student) : ?>
+                    <?php foreach ($student as $student) : ?>
                         <tr>
                             <td><a href="#details"><?php echo htmlspecialchars($student['stu_id']); ?></a></td>
                             <td><a href="#details"><?php echo htmlspecialchars($student['stu_lname']); ?></a></td>
