@@ -20,9 +20,9 @@
         <h2>Select an Action</h2>
         <div class="option-buttons">
             <a href="search.php" class="option-button">Search</a>
-            <a href="#add-new-record" class="option-button">Add New Record</a>
-            <a href="#run-report" class="option-button">Run a Report</a>
-            <a href="#send-batch-email" class="option-button">Send Batch Email</a>
+            <a href="newrecord.php" class="option-button">Add New Record</a>
+            <a href="reports.php" class="option-button">Run a Report</a>
+            <a href="email.php" class="option-button">Send Batch Email</a>
         </div>
     </div>
 </main>
