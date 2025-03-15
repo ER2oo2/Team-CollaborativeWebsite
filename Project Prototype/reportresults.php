@@ -36,15 +36,8 @@ $report_results = $_SESSION['reportResults'];
         <img src="PennWestLogo.png" alt="PennWest University Logo">
         <span>PennWest Financial Aid Veteran’s Database</span>
     </header>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="search.html">Search</a>
-        <a href="newrecord.html">New Record</a>
-        <a href="email.html">Email</a>
-        <a href="reports.php">Reports</a>
-        &ensp;&ensp;&ensp;&ensp;<a href="login.html">Login</a>
-        <a href="#logout">| Logout</a>
-    </nav>
+    
+    <?php include 'navbar.php'; ?>
 
     <main>
         <div class="report-results-container">
