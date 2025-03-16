@@ -1,3 +1,49 @@
+<?php
+require_once('dbconnect.php');
+
+if (session_status() == PHP_SESSION_NONE) { 
+    session_start();
+}
+
+// Check if user is logged in
+if (isset($_SESSION['user_session'])) {
+    $staff_id = $_SESSION['staff']['staff_id'];
+    $staff_fname = $_SESSION['staff']['staff_fname'];
+    $staff_lname = $_SESSION['staff']['staff_lname'];
+    $staff_email = $_SESSION['staff']['staff_email'];
+    $staff_role = $_SESSION['staff']['staff_role'];
+} else {
+    $error = "No user is logged in";
+    echo $error;	
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $subject = $_POST['subject'];
+    $message = $_POST['message'];
+    $scheduled_email = !empty($_POST['scheduled_email']) ? $_POST['scheduled_email'] : NULL;
+
+    if (empty($subject) || empty($message)) {
+        echo "Please fill out the subject and message fields.";
+        exit;
+    }
+
+    try {
+        $query = "INSERT INTO email_template (tmplt_subject, tmplt_body, scheduled_email) 
+                  VALUES (:subject, :message, :scheduled_email)";
+        $statement = $db->prepare($query);
+        $statement->bindParam(':subject', $subject);
+        $statement->bindParam(':message', $message);
+        $statement->bindParam(':scheduled_email', $scheduled_email, PDO::PARAM_STR);
+        $statement->execute();
+        $statement->closeCursor();
+
+        echo "Template saved successfully!";
+    } catch (PDOException $e) {
+        echo "Error saving template: " . $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
