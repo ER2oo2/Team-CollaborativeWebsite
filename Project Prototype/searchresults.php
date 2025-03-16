@@ -50,7 +50,7 @@ $student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
 <main>
     <div class="results-container">
         <h2>Search Results</h2>
-        <form action="#" method="post">
+        <form action="studentrecord.php" method="post">
             <table>
                 <thead>
                     <tr>
