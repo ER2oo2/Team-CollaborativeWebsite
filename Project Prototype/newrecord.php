@@ -13,7 +13,8 @@ if (isset($_SESSION['user_session'])) {
     $staff_role = $_SESSION['staff']['staff_role'];
 } else {
      $error = "No user is logged in";
-     echo $error;	
+     echo $error;
+     exit;	
 }
 
 if (isset($_POST['student-id'])) {
@@ -35,8 +36,8 @@ if (isset($_POST['student-id'])) {
     }
 
     if (empty($error)) {
-            $query = 'INSERT INTO student (stu_id, stu_fname, stu_lname, stu_address, stu_phone, stu_email) 
-              VALUES (:student_id, :first_name, :last_name, :address, :phone, :email)';
+        $query = 'INSERT INTO student (stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email) 
+          VALUES (:student_id, :first_name, :last_name, :address, :city, :state, :zip, :phone, :email)';
         $statement = $db->prepare($query);
         $statement->bindParam(':student_id', $student_id);
         $statement->bindParam(':first_name', $first_name);
@@ -47,11 +48,10 @@ if (isset($_POST['student-id'])) {
         $statement->bindParam(':zip', $zip);
         $statement->bindParam(':phone', $phone);
         $statement->bindParam(':email', $email);
-        $statement->execute();
-        $statement->closeCursor();
 
         //successful insert, redirect to student record page
         if($statement->execute()) {
+            $statement->closeCursor();
             header("Location: studentrecord.php?stu_id=" . urlencode($studentId));
         } else {
             $error = "Error adding student record.";
