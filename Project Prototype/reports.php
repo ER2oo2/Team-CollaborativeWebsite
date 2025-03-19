@@ -3,10 +3,18 @@
 session_start();
 require_once('dbconnect.php');
 
-if (!isset($_SESSION['user_session']) || !isset($_SESSION['staff'])) {
-    header('Location: login.php');
-    exit();
-}
+if (isset($_SESSION['staff'])) {
+    $staff_id = $_SESSION['staff']['staff_username'];
+    $staff_fname = $_SESSION['staff']['staff_fname'];
+    $staff_lname = $_SESSION['staff']['staff_lname'];
+    $staff_email = $_SESSION['staff']['staff_email'];
+    $staff_role = $_SESSION['staff']['staff_role'];
+ } else {
+     $error = "No user is logged in";
+     echo $error;
+     header('Location: login.php');
+     exit();		
+ }
 
 // Get form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

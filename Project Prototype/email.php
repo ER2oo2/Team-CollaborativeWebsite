@@ -6,15 +6,17 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Check if user is logged in
-if (isset($_SESSION['user_session'])) {
-    $staff_id = $_SESSION['staff']['staff_id'];
+if (isset($_SESSION['staff'])) {
+    $staff_id = $_SESSION['staff']['staff_username'];
     $staff_fname = $_SESSION['staff']['staff_fname'];
     $staff_lname = $_SESSION['staff']['staff_lname'];
     $staff_email = $_SESSION['staff']['staff_email'];
     $staff_role = $_SESSION['staff']['staff_role'];
 } else {
-    $error = "No user is logged in";
-    echo $error;	
+	$error = "No user is logged in";
+	echo $error;
+    header('Location: login.php');
+    exit();	
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
