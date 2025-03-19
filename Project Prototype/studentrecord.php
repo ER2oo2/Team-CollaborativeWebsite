@@ -9,12 +9,12 @@ if (!isset($_SESSION['user_session']) || !isset($_SESSION['staff'])) {
 }
 
 // Check for student ID
-if (!isset($_GET['stu_id'])) {
+if (!isset($_POST['stu_id'])) {
     echo "No student ID provided.";
     exit();
 }
 
-$student_id = $_GET['stu_id'];
+$student_id = $_POST['stu_id'];
 
 $query = 'SELECT * FROM student WHERE stu_id = :student_id';
 $statement = $db->prepare($query);

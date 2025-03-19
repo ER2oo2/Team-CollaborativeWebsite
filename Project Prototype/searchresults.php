@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
     
 //checking to see if SESSION variables passed correctly
-if (isset($_SESSION['user_session'])) {
+if (isset($_SESSION['user_session']) || isset($_SESSION['staff'])) {
    $staff_id = $_SESSION['staff']['staff_id'];
    $staff_fname = $_SESSION['staff']['staff_fname'];
    $staff_lname = $_SESSION['staff']['staff_lname'];
@@ -50,7 +50,7 @@ $student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
 <main>
     <div class="results-container">
         <h2>Search Results</h2>
-        <form action="studentrecord.php" method="post">
+        <form action="#" method="post">
             <table>
                 <thead>
                     <tr>

@@ -1,11 +1,15 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once('dbconnect.php');
+
+
 
 if (session_status() == PHP_SESSION_NONE) { 
     session_start();
 }
 
-if (isset($_SESSION['user_session'])) {
+if (isset($_SESSION['user_session']) || isset($_SESSION['staff'])) {
     $staff_id = $_SESSION['staff']['staff_id'];
     $staff_fname = $_SESSION['staff']['staff_fname'];
     $staff_lname = $_SESSION['staff']['staff_lname'];
@@ -14,10 +18,11 @@ if (isset($_SESSION['user_session'])) {
 } else {
      $error = "No user is logged in";
      echo $error;
-     exit;	
+	
 }
 
 if (isset($_POST['student-id'])) {
+    var_dump($_POST);
     $student_id = $_POST['student-id'];
     $first_name = $_POST['first-name'];
     $last_name = $_POST['last-name'];
@@ -27,38 +32,37 @@ if (isset($_POST['student-id'])) {
     $zip = $_POST['zip'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
+    $aid_mos = $_POST['aid-mos'];
+    $aid_days = $_POST['aid-days'];
 
-    if (empty($student_id) || empty($first_name) || empty($last_name) || empty($email || 
-      empty($address) || empty($phone))) {
-        $error = "Please fill out all fields.";
+    if (empty($student_id) || empty($first_name) || empty($last_name) || empty($email) || 
+      empty($address) || empty($phone) || empty($aid_mos) || empty($aid_days) || (!is_numeric($zip)) ) {
+        $error = "Please fill out all fields with proper values.";
         echo $error;
-        exit;
+        
     }
 
-    if (empty($error)) {
-        $query = 'INSERT INTO student (stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email) 
-          VALUES (:student_id, :first_name, :last_name, :address, :city, :state, :zip, :phone, :email)';
-        $statement = $db->prepare($query);
-        $statement->bindParam(':student_id', $student_id);
-        $statement->bindParam(':first_name', $first_name);
-        $statement->bindParam(':last_name', $last_name);
-        $statement->bindParam(':address', $address);
-        $statement->bindParam(':city', $city);
-        $statement->bindParam(':state', $state);
-        $statement->bindParam(':zip', $zip);
-        $statement->bindParam(':phone', $phone);
-        $statement->bindParam(':email', $email);
-
-        //successful insert, redirect to student record page
-        if($statement->execute()) {
-            $statement->closeCursor();
-            header("Location: studentrecord.php?stu_id=" . urlencode($studentId));
-        } else {
-            $error = "Error adding student record.";
-            echo $error;
-        }
-    }
+         $query = 'INSERT INTO student (stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, 
+                        stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days) 
+          VALUES (:student_id, :first_name, :last_name, :address, :city, :state, :zip, :phone, :email, :aid_mos, :aid_days)';
+          $statement = $db->prepare($query);
+          $statement->bindParam(':student_id', $student_id);
+          $statement->bindParam(':first_name', $first_name);
+          $statement->bindParam(':last_name', $last_name);
+          $statement->bindParam(':address', $address);
+          $statement->bindParam(':city', $city);
+          $statement->bindParam(':state', $state);
+          $statement->bindParam(':zip', $zip);
+          $statement->bindParam(':phone', $phone);
+          $statement->bindParam(':email', $email);
+          $statement->bindParam(':aid_mos', $aid_mos);
+          $statement->bindParam(':aid_days', $aid_days);
+          $statement->execute();
+          $statement->closeCursor();
+          header("Location: studentrecord.php?stu_id=" . urlencode($student_id));
+            exit;
 }
+
 
 ?>
 
@@ -82,7 +86,7 @@ if (isset($_POST['student-id'])) {
 <main>
     <div class="form-container">
         <h2>Add New Student Record</h2>
-        <form action="#" method="post" class="new-record-form">
+        <form action="" method="post" class="new-record-form">
             
             <!-- Student ID (Required) -->
             <div class="form-group">
@@ -136,6 +140,16 @@ if (isset($_POST['student-id'])) {
             <div class="form-group">
                 <label for="email">Email <span style="color: red;">*</span>:</label>
                 <input type="email" id="email" name="email" required placeholder="Enter email address">
+            </div>
+
+            <div class="form-group">
+                <label for="aid-mos">Balance of aid months:</label>
+                <input type="text" id="aid-mos" name="aid-mos" placeholder="Enter aid months left">
+            </div>
+
+            <div class="form-group">
+                <label for="aid-days">Balance of aid days:</label>
+                <input type="text" id="aid-days" name="aid-days" placeholder="Enter aid days left">
             </div>
             
             <!-- Submit Button -->
