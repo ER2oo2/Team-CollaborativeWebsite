@@ -1,3 +1,23 @@
+<?php
+require_once('dbconnect.php');
+
+//validate if there is a session, if not- start one
+if (session_status() == PHP_SESSION_NONE) { 
+    session_start();
+}
+
+//checking to see if SESSION variables passed correctly
+if (isset($_SESSION['staff'])) {
+    $staff_id = $_SESSION['staff']['staff_username'];
+    $staff_fname = $_SESSION['staff']['staff_fname'];
+    $staff_lname = $_SESSION['staff']['staff_lname'];
+    $staff_email = $_SESSION['staff']['staff_email'];
+    $staff_role = $_SESSION['staff']['staff_role'];
+ } else {
+     $error = "No user is logged in";
+}	
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +34,16 @@
 </header>
 
 <?php include 'navbar.php'; ?>
+  <!-- Display error if it exists -->
+  <h1><?php if (!empty($error)): ?>
 
+      <?php echo htmlspecialchars($error); ?>
+
+    <?php endif; ?>
+  </h1>
 <main>
+
+
     <div class="options-container">
         <h2>Select an Action</h2>
         <div class="option-buttons">

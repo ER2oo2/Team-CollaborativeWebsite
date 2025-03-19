@@ -1,20 +1,33 @@
 <?php
-// Start session
-session_start();
 require_once('dbconnect.php');
 
-if (!isset($_SESSION['user_session']) || !isset($_SESSION['staff'])) {
-    header('Location: login.php');
+if (session_status() === PHP_SESSION_NONE) { 
+    session_start();
+}
+
+if (isset($_SESSION['staff'])) {
+    $staff_id = $_SESSION['staff']['staff_username'];
+    $staff_fname = $_SESSION['staff']['staff_fname'];
+    $staff_lname = $_SESSION['staff']['staff_lname'];
+    $staff_email = $_SESSION['staff']['staff_email'];
+    $staff_role = $_SESSION['staff']['staff_role'];
+ } else {
+     $error = "No user is logged in";
+     echo $error;
+     header('Location: login.php');
+     exit();	
+ }
+var_dump($_POST['stu_id']);
+
+// Retrieve the selected student IDs from the form POST data
+$selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+if (empty($selectedStudents)) {
+    echo "No student ID selected.";
     exit();
 }
 
-// Check for student ID
-if (!isset($_POST['stu_id'])) {
-    echo "No student ID provided.";
-    exit();
-}
-
-$student_id = $_POST['stu_id'];
+$student_id = $selectedStudents[0];
 
 $query = 'SELECT * FROM student WHERE stu_id = :student_id';
 $statement = $db->prepare($query);
@@ -23,10 +36,6 @@ $statement->execute();
 $student = $statement->fetch();
 $statement->closeCursor();
 
-if (!$student) {
-    echo "Student not found.";
-    exit();
-}
 
 // Query the database for details
 $query = 'SELECT * FROM certification WHERE stu_id = :student_id ORDER BY cert_date DESC LIMIT 1';

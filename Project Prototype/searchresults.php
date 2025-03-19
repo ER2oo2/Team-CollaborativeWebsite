@@ -7,19 +7,21 @@ if (session_status() == PHP_SESSION_NONE) {
 }
     
 //checking to see if SESSION variables passed correctly
-if (isset($_SESSION['user_session']) || isset($_SESSION['staff'])) {
-   $staff_id = $_SESSION['staff']['staff_id'];
+if (isset($_SESSION['staff'])) {
+   $staff_id = $_SESSION['staff']['staff_username'];
    $staff_fname = $_SESSION['staff']['staff_fname'];
    $staff_lname = $_SESSION['staff']['staff_lname'];
    $staff_email = $_SESSION['staff']['staff_email'];
    $staff_role = $_SESSION['staff']['staff_role'];
 } else {
     $error = "No user is logged in";
-    echo $error;	
+    echo $error;
+    header('Location: login.php');
+    exit();		
 }
 
 //retrieve search results from session
-$student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
+$students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
     
 ?>
 
@@ -50,7 +52,7 @@ $student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
 <main>
     <div class="results-container">
         <h2>Search Results</h2>
-        <form action="#" method="post">
+        <form action="studentrecord.php" method="post">
             <table>
                 <thead>
                     <tr>
@@ -65,13 +67,17 @@ $student = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($student as $student) : ?>
+                    <?php foreach ($students as $student) : ?>
                         <tr>
-                            <td><a href="#details"><?php echo htmlspecialchars($student['stu_id']); ?></a></td>
+                            <td><a href="studentrecord.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>" >
+                                <?php echo htmlspecialchars($student['stu_id']); ?>
+                                </a>
+                            </td>
                             <td><a href="#details"><?php echo htmlspecialchars($student['stu_lname']); ?></a></td>
                             <td><a href="#details"><?php echo htmlspecialchars($student['stu_fname']); ?></a></td>
                             <td><a href="#details"><?php echo ($student['cert_status'] == 1) ? 'Y' : 'N'; ?></a></td>
                             <td><input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>"></td>
+                            
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
