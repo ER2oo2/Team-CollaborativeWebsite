@@ -1,7 +1,9 @@
 <?php
-// Start session
-session_start();
 require_once('dbconnect.php');
+
+if (session_status() == PHP_SESSION_NONE) { 
+    session_start();
+}
 
 if (isset($_SESSION['staff'])) {
     $staff_id = $_SESSION['staff']['staff_username'];
