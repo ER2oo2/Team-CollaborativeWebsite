@@ -42,6 +42,17 @@ if (isset($_POST['student-id'])) {
         
     }
 
+        //Check if Student ID already exists
+        $checkQuery = "SELECT COUNT(*) FROM student WHERE stu_id = :student_id";
+        $checkStmt = $db->prepare($checkQuery);
+        $checkStmt->bindParam(':student_id', $student_id);
+        $checkStmt->execute();
+        $exists = $checkStmt->fetchColumn();
+
+         if ($exists) {
+            die("Error: Student ID already exists.");
+        }
+        
          $query = 'INSERT INTO student (stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, 
                         stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days) 
           VALUES (:student_id, :first_name, :last_name, :address, :city, :state, :zip, :phone, :email, :aid_mos, :aid_days)';
@@ -152,7 +163,7 @@ if (isset($_POST['student-id'])) {
                 <input type="text" id="aid-days" name="aid-days" placeholder="Enter aid days left">
             </div>
             
-            <input type="hidden" name="student-id" value="<?php echo isset($student_id) ? htmlspecialchars($student_id) : ''; ?>">
+    
 
             <!-- Submit Button -->
             <button type="submit" class="option-button">Submit</button>

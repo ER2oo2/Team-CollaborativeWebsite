@@ -17,16 +17,22 @@ if (isset($_SESSION['staff'])) {
      header('Location: login.php');
      exit();	
  }
-//var_dump($_POST['stu_id']);
 
-// Retrieve the selected student IDs from the form POST data
+
+// Retrieve stu_id from GET or POST
 $selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
-$student_id = isset($_GET['stu_id']) ? $_GET['stu_id'] : (isset($_POST['student-id']) ? $_POST['student-id'] : null);
+// Retrieve the selected student IDs from the form POST data
+$student_id = isset($_GET['stu_id']) ? $_GET['stu_id'] : (isset($_POST['select-student']) ? $_POST['select-student'][0] : null);
+
 if (!$student_id) {
     echo "No student ID provided.";
     exit();
 }
+
+// Debug output
+//echo "Student ID passed to this page: " . htmlspecialchars($student_id);
+
 $query = 'SELECT * FROM student WHERE stu_id = :student_id';
 $statement = $db->prepare($query);
 $statement->bindParam(':student_id', $student_id);
