@@ -17,7 +17,7 @@ if (isset($_SESSION['staff'])) {
      header('Location: login.php');
      exit();	
  }
-var_dump($_POST['stu_id']);
+//var_dump($_POST['stu_id']);
 
 // Retrieve the selected student IDs from the form POST data
 $selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
@@ -99,6 +99,8 @@ $statement->closeCursor();
         
         <!-- Email Student Button -->
         <button class="email-button" onclick="location.href='mailto:<?php echo htmlspecialchars($student['stu_email']); ?>'">Email Student</button>
+        <!-- Update Student Button -->
+        <button class="email-button" onclick="location.href='studentUpdate.php'">Update Student</button>
     </div>
 </main>
 
