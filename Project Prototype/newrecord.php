@@ -152,6 +152,8 @@ if (isset($_POST['student-id'])) {
                 <input type="text" id="aid-days" name="aid-days" placeholder="Enter aid days left">
             </div>
             
+            <input type="hidden" name="student-id" value="<?php echo isset($student_id) ? htmlspecialchars($student_id) : ''; ?>">
+
             <!-- Submit Button -->
             <button type="submit" class="option-button">Submit</button>
             

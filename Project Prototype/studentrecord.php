@@ -22,13 +22,11 @@ if (isset($_SESSION['staff'])) {
 // Retrieve the selected student IDs from the form POST data
 $selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
 
-if (empty($selectedStudents)) {
-    echo "No student ID selected.";
+$student_id = isset($_GET['stu_id']) ? $_GET['stu_id'] : (isset($_POST['student-id']) ? $_POST['student-id'] : null);
+if (!$student_id) {
+    echo "No student ID provided.";
     exit();
 }
-
-$student_id = $selectedStudents[0];
-
 $query = 'SELECT * FROM student WHERE stu_id = :student_id';
 $statement = $db->prepare($query);
 $statement->bindParam(':student_id', $student_id);
