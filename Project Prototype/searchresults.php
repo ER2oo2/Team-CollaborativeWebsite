@@ -1,28 +1,35 @@
 <?php
 require_once('dbconnect.php');
 
-//validate if there is a session, if not- start one
+// Start the session if not already started
 if (session_status() == PHP_SESSION_NONE) { 
     session_start();
 }
-    
-//checking to see if SESSION variables passed correctly
-if (isset($_SESSION['staff'])) {
-   $staff_id = $_SESSION['staff']['staff_username'];
-   $staff_fname = $_SESSION['staff']['staff_fname'];
-   $staff_lname = $_SESSION['staff']['staff_lname'];
-   $staff_email = $_SESSION['staff']['staff_email'];
-   $staff_role = $_SESSION['staff']['staff_role'];
-} else {
-    $error = "No user is logged in";
-    echo $error;
+
+// Check for logged-in staff
+if (!isset($_SESSION['staff'])) {
+    echo "No user is logged in";
     header('Location: login.php');
-    exit();		
+    exit();
 }
 
-//retrieve search results from session
-$students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
-    
+// Retrieve search results from the session
+if (isset($_SESSION['searchResults'])) {
+    $students = $_SESSION['searchResults'];
+} else {
+    echo "No search results found. Please try your search again.";
+    exit();
+}
+
+// Query the database for certification details.
+$query = 'SELECT * FROM certification WHERE stu_id = :student_id';
+$statement = $db->prepare($query);
+$statement->bindParam(':student_id', $student_id);
+$statement->execute();
+$certification = $statement->fetchAll();
+$statement->closeCursor();
+?>
+
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +40,6 @@ $students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
     <title>Search Results</title>
     <link rel="stylesheet" href="styles.css">
     <script>
-        // JavaScript function to toggle all checkboxes
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('input[name="select-student[]"]');
             checkboxes.forEach(checkbox => checkbox.checked = source.checked);
@@ -69,20 +75,21 @@ $students = isset($_SESSION['searchResults']) ? $_SESSION['searchResults'] : [];
                 <tbody>
                     <?php foreach ($students as $student) : ?>
                         <tr>
-                            <td><a href="studentrecord.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>" >
-                                <?php echo htmlspecialchars($student['stu_id']); ?>
+                            <td>
+                                <a href="studentrecord.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>">
+                                    <?php echo htmlspecialchars($student['stu_id']); ?>
                                 </a>
                             </td>
-                            <td><a href="#details"><?php echo htmlspecialchars($student['stu_lname']); ?></a></td>
-                            <td><a href="#details"><?php echo htmlspecialchars($student['stu_fname']); ?></a></td>
-                            <td><a href="#details"><?php echo ($student['cert_status'] == 1) ? 'Y' : 'N'; ?></a></td>
-                            <td><input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>"></td>
-                            
+                            <td><?php echo htmlspecialchars($student['stu_lname']); ?></td>
+                            <td><?php echo htmlspecialchars($student['stu_fname']); ?></td>
+                            <td><?php echo htmlspecialchars($certification['cert_status'] == 1) ? 'Y' : 'N'; ?></td>
+                            <td>
+                                <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <!-- Submit Button Below the Table -->
             <button type="submit" class="option-button" style="margin-top: 20px;">Submit</button>
         </form>
     </div>

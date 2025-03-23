@@ -25,6 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cert_status = $_POST['cert-status'];
     $aid_type = $_POST['aid-type'];
 
+
+// Save report parameters to session
+    $_SESSION['reportParams'] = [
+        'date_range' => "$start_date to $end_date",
+        'cert_status' => $cert_status,
+        'aid_type' => $aid_type
+    ];
     // SQL Query
     $query = 'SELECT student.stu_id, student.stu_fname, student.stu_lname, student.stu_email,
                      certification.cert_status, student.stu_aid_bal_months, student.stu_aid_bal_days

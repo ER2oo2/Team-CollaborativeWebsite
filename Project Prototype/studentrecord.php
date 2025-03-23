@@ -81,30 +81,37 @@ $statement->closeCursor();
             <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($student['stu_phone']); ?></p>
             <p><strong>Email:</strong> <?php echo htmlspecialchars($student['stu_email']); ?></p>
             <p><strong>Balance:</strong> <?php echo htmlspecialchars($student['stu_aid_bal_months'] . ' Months, ' . $student['stu_aid_bal_days'] . ' Days'); ?></p>
-            <p><strong>Certification Status:</strong> 
-                <?php 
-                if ($certification && $certification['cert_status'] == 1) {
-                    echo 'Certified';
-                } else {
-                    echo 'Not Certified';
-                }
-                ?>
-            </p>
-            <p><strong>Certification Date:</strong> 
-                <?php 
-                if ($certification && $certification['cert_date']) {
-                    echo htmlspecialchars($certification['cert_date']);
+            <p><strong>Certification Status:</strong>       
+            <?php 
+                if ($certification && isset($certification['cert_status'])) {
+                    echo $certification['cert_status'] == 1 ? 'Certified' : 'Not Certified';
                 } else {
                     echo 'N/A';
                 }
-                ?>
+            ?>
             </p>
+            <p><strong>Aid Balance:</strong></p>
+                <p>
+                    Months: <?php echo htmlspecialchars($student['stu_aid_bal_months']); ?>
+                    Days: <?php echo htmlspecialchars($student['stu_aid_bal_days']); ?>
+                </p>
+            </p>
+            <p><strong>Certification Date:</strong> 
+            <?php 
+            if ($certification && isset($certification['cert_date'])) {
+                echo htmlspecialchars($certification['cert_date']);
+            } else {
+                echo 'N/A';
+            }
+        ?>
+        </p>
         </div>
         
         <!-- Email Student Button -->
         <button class="email-button" onclick="location.href='mailto:<?php echo htmlspecialchars($student['stu_email']); ?>'">Email Student</button>
         <!-- Update Student Button -->
-        <button class="email-button" onclick="location.href='studentUpdate.php'">Update Student</button>
+        <button class="email-button" onclick="location.href='studentupdate.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>'">Update Student</button>
+
     </div>
 </main>
 

@@ -12,7 +12,7 @@ CREATE TABLE student(
     stu_address VARCHAR(30),
     stu_city VARCHAR(30),
     stu_state VARCHAR(2),
-    stu_zip INT(5),
+    stu_zip VARCHAR(10),
     stu_phone VARCHAR (16), /*16 chars to account for . or - between area code and exchange*/
     stu_email VARCHAR (40),
     stu_aid_bal_months INTEGER,

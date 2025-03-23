@@ -57,9 +57,13 @@ $report_results = $_SESSION['reportResults'];
             <div class="report-summary">
                 <p><strong>Report Parameters:</strong></p>
                 <ul>
-                    <li><strong>Date Range:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['date_range']); ?></li>
-                    <li><strong>Certification Status:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['cert_status']); ?></li>
-                    <li><strong>Aid Type:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['aid_type']); ?></li>
+                    <?php if (isset($_SESSION['reportParams'])) : ?>
+                        <li><strong>Date Range:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['date_range']); ?></li>
+                        <li><strong>Certification Status:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['cert_status']); ?></li>
+                        <li><strong>Aid Type:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['aid_type']); ?></li>
+                    <?php else : ?>
+                        <li>No report parameters found.</li>
+                    <?php endif; ?>
                 </ul>
             </div>
 
