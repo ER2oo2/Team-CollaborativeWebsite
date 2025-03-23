@@ -20,16 +20,6 @@ if (isset($_SESSION['searchResults'])) {
     echo "No search results found. Please try your search again.";
     exit();
 }
-
-// Query the database for certification details.
-$query = 'SELECT * FROM certification WHERE stu_id = :student_id';
-$statement = $db->prepare($query);
-$statement->bindParam(':student_id', $student_id);
-$statement->execute();
-$certification = $statement->fetchAll();
-$statement->closeCursor();
-?>
-
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +64,27 @@ $statement->closeCursor();
                 </thead>
                 <tbody>
                     <?php foreach ($students as $student) : ?>
+                        <?php
+                        // Fetch certification details for the current student
+                        $student_id = $student['stu_id'];
+                        $query = 'SELECT * FROM certification WHERE stu_id = :student_id';
+                        $statement = $db->prepare($query);
+                        $statement->bindParam(':student_id', $student_id);
+                        $statement->execute();
+                        $certification = $statement->fetchAll();
+                        $statement->closeCursor();
+
+                        // Determine certification status
+                        $cert_status = 'N'; // Default to 'N'
+                        if (!empty($certification)) {
+                            foreach ($certification as $cert) {
+                                if ($cert['cert_status'] == 1) {
+                                    $cert_status = 'Y';
+                                    break;
+                                }
+                            }
+                        }
+                        ?>
                         <tr>
                             <td>
                                 <a href="studentrecord.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>">
@@ -82,7 +93,7 @@ $statement->closeCursor();
                             </td>
                             <td><?php echo htmlspecialchars($student['stu_lname']); ?></td>
                             <td><?php echo htmlspecialchars($student['stu_fname']); ?></td>
-                            <td><?php echo htmlspecialchars($certification['cert_status'] == 1) ? 'Y' : 'N'; ?></td>
+                            <td><?php echo $cert_status; ?></td>
                             <td>
                                 <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
                             </td>
