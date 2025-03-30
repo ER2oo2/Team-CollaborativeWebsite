@@ -134,7 +134,8 @@ if (isset($_POST['student-id'])) {
             </div>
             <div class="form-group">
                 <label for="state">State:</label>
-                <input type="text" id="state" name="state" placeholder="Enter state">
+                <input type="text" id="state" name="state" placeholder="Enter state" minlength="2" maxlength="2" pattern="[A-Za-z]{2}" title="Please enter exactly 2 letters">
+
             </div>
             <div class="form-group">
                 <label for="zip">Zip Code:</label>
