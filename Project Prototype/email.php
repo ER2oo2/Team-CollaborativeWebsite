@@ -101,17 +101,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <textarea id="body" name="body" rows="10" placeholder="Enter email content here..."></textarea>
             </div>
             
-            <!-- Schedule Batch Emails -->
-            <div class="form-group">
-                <label for="schedule">Schedule Batch Emails:</label>
-                <select id="schedule" name="schedule">
-                    <option value="now">Send Immediately</option>
-                    <option value="1-hour">In 1 Hour</option>
-                    <option value="1-day">In 1 Day</option>
-                    <option value="1-week">In 1 Week</option>
-                    <!-- Additional scheduling options as needed -->
-                </select>
-            </div>
             <!-- Save Template Button -->
             <button type="submit" class="option-button">Save Template</button>
             <!-- Send Email Button -->
