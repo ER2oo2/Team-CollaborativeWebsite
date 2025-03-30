@@ -49,16 +49,14 @@ CREATE TABLE report(
 CREATE TABLE email_template(
     tmplt_id INT AUTO_INCREMENT PRIMARY KEY,
     tmplt_subject VARCHAR(100),
-    tmplt_body LONGTEXT,
-    scheduled_email DATE
+    tmplt_body LONGTEXT
 );
 
 CREATE TABLE email_to_student(
     email_id INT AUTO_INCREMENT PRIMARY KEY,
     stu_id VARCHAR(15),
     staff_id VARCHAR(15),
-    tmplt_id INT, 
-    sch_email_id INT,
+    tmplt_id INT,
     FOREIGN KEY (stu_id) REFERENCES student(stu_id) ON DELETE CASCADE, 
     FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE CASCADE, 
     FOREIGN KEY (tmplt_id) REFERENCES email_template(tmplt_id) ON DELETE CASCADE
