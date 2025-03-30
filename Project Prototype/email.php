@@ -18,11 +18,13 @@ if (isset($_SESSION['staff'])) {
     header('Location: login.php');
     exit();	
 }
+// Retrieve report
+$report_results = $_SESSION['reportResults'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject = $_POST['subject'];
     $message = $_POST['message'];
-    $scheduled_email = !empty($_POST['scheduled_email']) ? $_POST['scheduled_email'] : NULL;
+    
 
     if (empty($subject) || empty($message)) {
         echo "Please fill out the subject and message fields.";
@@ -30,12 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        $query = "INSERT INTO email_template (tmplt_subject, tmplt_body, scheduled_email) 
-                  VALUES (:subject, :message, :scheduled_email)";
+        $query = "INSERT INTO email_template (tmplt_subject, tmplt_body) 
+                  VALUES (:subject, :message)";
         $statement = $db->prepare($query);
         $statement->bindParam(':subject', $subject);
         $statement->bindParam(':message', $message);
-        $statement->bindParam(':scheduled_email', $scheduled_email, PDO::PARAM_STR);
         $statement->execute();
         $statement->closeCursor();
 
@@ -70,8 +71,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- Display Preselected Student(s) -->
         <div class="preselected-students">
             <h3>Selected Student(s):</h3>
-            <p>John Doe (ID: 1234567, Email: johndoe@pennwest.edu)</p>
-            <!-- Additional students can be added here -->
+            
+            
+            <?php foreach ($report_results as $result) : ?>
+                        
+                            <?php echo htmlspecialchars($result['stu_fname'] . ' '); ?>
+                            <?php echo htmlspecialchars($result['stu_lname'] . ' '); ?>
+                            <?php echo htmlspecialchars($result['stu_email'] . ', '); ?>
+                            
+                        
+                    <?php endforeach; ?>
         </div>
 
         <!-- Email Form -->
