@@ -147,11 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <button type="submit" class="option-button">Generate Report</button>
             </form>
 
-            <!-- Action Buttons for Report -->
-            <div class="report-actions">
-                <button onclick="emailAllResults()" class="option-button">Email All Results</button>
-                <button onclick="printReport()" class="option-button">Print Report</button>
-            </div>
         </div>
     </main>
 
