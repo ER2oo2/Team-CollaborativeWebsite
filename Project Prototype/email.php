@@ -21,106 +21,95 @@ if (isset($_SESSION['staff'])) {
 // Retrieve report
 $report_results = $_SESSION['reportResults'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $subject = $_POST['subject'];
-    $message = $_POST['message'];
-    
 
-    if (empty($subject) || empty($message)) {
-        echo "Please fill out the subject and message fields.";
-        exit;
-    }
-
-    try {
-        $query = "INSERT INTO email_template (tmplt_subject, tmplt_body) 
-                  VALUES (:subject, :message)";
-        $statement = $db->prepare($query);
-        $statement->bindParam(':subject', $subject);
-        $statement->bindParam(':message', $message);
-        $statement->execute();
-        $statement->closeCursor();
-
-        echo "Template saved successfully!";
-    } catch (PDOException $e) {
-        echo "Error saving template: " . $e->getMessage();
-    }
-}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Students</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Students</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    function sendEmail(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+      
+      // Get the subject and body values from the form
+      var subject = document.getElementById("subject").value;
+      var body = document.getElementById("body").value;
+      
+      // Get the recipients from the generated report
+      var recipients = "<?php 
+          $emails = array();
+          foreach ($report_results as $result) {
+              $emails[] = $result['stu_email'];
+          }
+          echo implode(',', $emails);
+      ?>";
+      
+      // Encode the subject and body for inclusion in a URL
+      subject = encodeURIComponent(subject);
+      body = encodeURIComponent(body);
+      
+      // Construct the mailto link with the recipients, subject, and body
+      var mailtoLink = "mailto:" + recipients + "?subject=" + subject + "&body=" + body;
+      
+      // Open the mail client
+      window.location.href = mailtoLink;
+      
+      return false;
+    }
+  </script>
 </head>
 <body>
-
-<header>
-    <img src="PennWestLogo.png" alt="PennWest University Logo">
-    <span>PennWest Financial Aid Veteran’s Database</span>
-</header>
-
-<?php include 'navbar.php'; ?>
-
-<main>
-    <div class="email-form-container">
-        <h2>Email Students</h2>
-        
-        <!-- Display Preselected Student(s) -->
-        <div class="preselected-students">
-            <h3>Selected Student(s):</h3>
-            
-            <p>
-            <?php foreach ($report_results as $result) : ?>
-                        
-                            <?php echo htmlspecialchars($result['stu_fname'] . ' '); ?>
-                            <?php echo htmlspecialchars($result['stu_lname'] . ' '); ?>
-                            <?php echo htmlspecialchars($result['stu_email'] . ', '); ?>
-                            
-                        
-                    <?php endforeach; ?></p><br>
-        </div>
-
-        <!-- Email Form -->
-        <form action="#" method="post" class="email-form">
-            
-            <!-- Select Template -->
-            <div class="form-group">
-                <label for="template">Select Template:</label>
-                <select id="template" name="template">
-                    <option value="" disabled selected>Select a template</option>
-                    <option value="welcome">Welcome Email</option>
-                    <option value="financial-aid">Financial Aid Update</option>
-                    <option value="reminder">Payment Reminder</option>
-                    <!-- Add more templates as needed -->
-                </select>
-            </div>
-            
-            <!-- Subject -->
-            <div class="form-group">
-                <label for="subject">Subject:</label>
-                <input type="text" id="subject" name="subject" placeholder="Enter email subject">
-            </div>
-            
-            <!-- Email Body -->
-            <div class="form-group">
-                <label for="body">Email Body:</label>
-                <textarea id="body" name="body" rows="10" placeholder="Enter email content here..."></textarea>
-            </div>
-            
-            <!-- Save Template Button -->
-            <button type="submit" class="option-button">Save Template</button>
-            <!-- Send Email Button -->
-            <button type="submit" class="option-button">Send Email</button>
-        </form>
-    </div>
-</main>
-
-<footer>
-    Pennsylvania Western University
-</footer>
-
+  <header>
+      <img src="PennWestLogo.png" alt="PennWest University Logo">
+      <span>PennWest Financial Aid Veteran’s Database</span>
+  </header>
+  
+  <?php include 'navbar.php'; ?>
+  
+  <main>
+      <div class="email-form-container">
+          <h2>Email Students</h2>
+          
+          <!-- Display Preselected Student(s) -->
+          <div class="preselected-students">
+              <h3>Selected Student(s):</h3>
+              <p>
+              <?php foreach ($report_results as $result) : ?>
+                  <?php echo htmlspecialchars($result['stu_fname'] . ' '); ?>
+                  <?php echo htmlspecialchars($result['stu_lname'] . ' '); ?>
+                  <?php echo htmlspecialchars($result['stu_email'] . ', '); ?>
+              <?php endforeach; ?>
+              </p>
+              <br>
+          </div>
+  
+          <!-- Email Form -->
+          <form onsubmit="return sendEmail(event);" class="email-form">
+              <!-- Subject -->
+              <div class="form-group">
+                  <label for="subject">Subject:</label>
+                  <input type="text" id="subject" name="subject" placeholder="Enter email subject">
+              </div>
+              
+              <!-- Email Body -->
+              <div class="form-group">
+                  <label for="body">Email Body:</label>
+                  <textarea id="body" name="body" rows="10" placeholder="Enter email content here..."></textarea>
+              </div>
+              
+              <!-- Send Email Button -->
+              <button type="submit" class="option-button">Send Email</button>
+          </form>
+      </div>
+  </main>
+  
+  <footer>
+      Pennsylvania Western University
+  </footer>
 </body>
 </html>
+
