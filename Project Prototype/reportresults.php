@@ -36,7 +36,7 @@ $report_results = $_SESSION['reportResults'];
 
         // JavaScript function to email all results
         function emailAllResults() {
-            alert("Email sent to all results.");
+            window.location.href = 'email.php';
         }
     </script>
 </head>
@@ -97,7 +97,7 @@ $report_results = $_SESSION['reportResults'];
 
             <!-- Action Buttons for Results -->
             <div class="results-actions">
-                <button onclick="emailAllResults()" class="option-button">Email All Results</button>
+                <button onclick="emailAllResults()" class="option-button">Email these Students</button>
                 <button onclick="printResults()" class="option-button">Print Results</button>
             </div>
         </div>

@@ -89,11 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         window.print();
         }
 
-        // JavaScript function to email all returned results
-        function emailAllResults() {
-        // Normally this would send an email, but for demonstration purposes, it's an alert.
-        alert("Email sent to all returned results.");
-        }
     </script>
 </head>
 <body>

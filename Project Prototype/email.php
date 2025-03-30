@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="preselected-students">
             <h3>Selected Student(s):</h3>
             
-            
+            <p>
             <?php foreach ($report_results as $result) : ?>
                         
                             <?php echo htmlspecialchars($result['stu_fname'] . ' '); ?>
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <?php echo htmlspecialchars($result['stu_email'] . ', '); ?>
                             
                         
-                    <?php endforeach; ?>
+                    <?php endforeach; ?></p><br>
         </div>
 
         <!-- Email Form -->
