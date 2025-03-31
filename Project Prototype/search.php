@@ -158,6 +158,7 @@ if (isset($_POST['search-option'])) {
                 <input type="radio" id="search-months-of-aid" name="search-option" value="aid-balance">
                 <label for="search-months-of-aid">Search by Aid Balance:</label>
                 <select id="aid-balance" name="aid-balance">
+                    <option value="" disabled selected>Make a selection</option>
                     <option value="more-than-9">More than 9 months</option>
                     <option value="6-9">6-9 months</option>
                     <option value="3-6">3-6 months</option>
