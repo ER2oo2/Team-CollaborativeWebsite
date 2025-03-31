@@ -101,7 +101,12 @@ if (isset($_SESSION['searchResults'])) {
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <button type="submit" class="option-button" style="margin-top: 20px;">Submit</button>
+            <div style="margin-top: 20px;">
+                <!-- Normal submission button -->
+                <button type="submit" class="option-button">Submit</button>
+                <!-- Button for emailing. Note the formaction attribute here. -->
+                <button type="submit" formaction="email.php" class="option-button">Email these Students</button>
+            </div>
         </form>
     </div>
 </main>

@@ -18,9 +18,36 @@ if (isset($_SESSION['staff'])) {
     header('Location: login.php');
     exit();	
 }
-// Retrieve report
-$report_results = $_SESSION['reportResults'];
 
+// If the form was submitted with selected student IDs...
+if (isset($_POST['select-student']) && !empty($_POST['select-student'])) {
+    $selected_ids = $_POST['select-student'];
+    $report_results = array();
+    
+    // Loop through each selected student ID and fetch the record from the database
+    foreach ($selected_ids as $stu_id) {
+        $query = 'SELECT * FROM student WHERE stu_id = :stu_id';
+        $statement = $db->prepare($query);
+        $statement->bindParam(':stu_id', $stu_id);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement->closeCursor();
+        if ($result) {
+            $report_results[] = $result;
+        }
+    }
+    
+    // Store the selected student's records for use on this page
+    $_SESSION['reportResults'] = $report_results;
+} else {
+    // If no selected students were passed, try to use the existing session value
+    if (isset($_SESSION['reportResults'])) {
+        $report_results = $_SESSION['reportResults'];
+    } else {
+        echo "No student data was provided for emailing.";
+        exit();
+    }
+}
 
 ?>
 

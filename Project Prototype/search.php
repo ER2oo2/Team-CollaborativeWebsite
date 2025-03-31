@@ -21,6 +21,8 @@ if (isset($_SESSION['staff'])) {
     exit();		
 }
 
+// Initialize an error message variable
+$searchError = "";
 
 //select search method and store user input 
 if (isset($_POST['search-option'])) {
@@ -84,18 +86,15 @@ if (isset($_POST['search-option'])) {
     }
 
 
-
-    //redirect to search results page
-    if(empty($student)){
-        echo "No results found. Check your search criteria and try again.";
-        exit();
+    // If no results are found, set an error message; otherwise, store results and redirect.
+    if (empty($student)) {
+    $searchError = "No results found. Check your search criteria and try again.";
     } else {
-        //save serach results to session
-        $_SESSION['searchResults'] = $student;
-        header('Location: searchresults.php');
-        exit();
+    // Save search results to session and redirect if results exist
+    $_SESSION['searchResults'] = $student;
+    header('Location: searchresults.php');
+    exit();
     }
-  
 }
 
 ?>
@@ -121,6 +120,12 @@ if (isset($_POST['search-option'])) {
 <main>
 <div class="search-container">
         <h2>Search Students</h2>
+        <!-- Display error message if set -->
+        <?php 
+        if (!empty($searchError)) {
+            echo "<p style='color:red;'>$searchError</p>";
+        }
+        ?>
         <form action="search.php" method="post" class="search-form">
             
             <!-- Search by Name -->
