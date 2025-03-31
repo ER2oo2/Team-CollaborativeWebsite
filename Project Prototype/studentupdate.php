@@ -25,6 +25,7 @@ if (!$student_id) {
     exit();
 }
 
+
 // Fetch student details
 $query = 'SELECT * FROM student WHERE stu_id = :student_id';
 $statement = $db->prepare($query);
@@ -47,7 +48,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $months = filter_input(INPUT_POST, 'stu_aid_bal_months', FILTER_SANITIZE_NUMBER_INT);
     $days = filter_input(INPUT_POST, 'stu_aid_bal_days', FILTER_SANITIZE_NUMBER_INT);
     $cert_status = filter_input(INPUT_POST, 'cert_status', FILTER_SANITIZE_NUMBER_INT);
-    $cert_date = filter_input(INPUT_POST, 'cert_date', FILTER_SANITIZE_STRING);
+    $cert_date = filter_input(INPUT_POST, 'cert_date');
+    // Set to null if blank
+    if (empty($cert_date)) {
+        $cert_date = null;
+    }
 
     // Update the student table (aid balance)
     $query1 = 'UPDATE student SET stu_aid_bal_months = :months, stu_aid_bal_days = :days WHERE stu_id = :stu_id';
@@ -62,7 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $query2 = 'UPDATE certification SET cert_status = :cert_status, cert_date = :cert_date WHERE stu_id = :stu_id';
     $statement2 = $db->prepare($query2);
     $statement2->bindParam(':cert_status', $cert_status);
-    $statement2->bindParam(':cert_date', $cert_date);
+    if ($cert_date === null) {
+        $statement2->bindValue(':cert_date', null, PDO::PARAM_NULL);
+    } else {
+        $statement2->bindParam(':cert_date', $cert_date);
+    }
     $statement2->bindParam(':stu_id', $student_id);
     $statement2->execute();
     $statement2->closeCursor();
@@ -124,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Editable Certification Date Section -->
                 <p><strong>Certification Date:</strong></p>
                 <p>
-                    <input type="date" name="cert_date" value="<?php echo htmlspecialchars($certification['cert_date']); ?>" required>
+                    <input type="date" name="cert_date" value="<?php echo htmlspecialchars($certification['cert_date']); ?>">
                 </p>
 
                 <!-- Combined Update Button -->

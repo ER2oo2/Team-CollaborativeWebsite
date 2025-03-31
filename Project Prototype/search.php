@@ -62,6 +62,25 @@ if (isset($_POST['search-option'])) {
         $statement->execute();
         $student = $statement->fetchAll();
         $statement->closeCursor();
+
+    } elseif ($searchOption == 'aid-balance') {
+        $aid_balance = $_POST['aid-balance'];
+    
+        // Adjust SQL query based on dropdown value with the correct column name:
+        if ($aid_balance == 'more-than-9') {
+            $query = 'SELECT * FROM student WHERE stu_aid_bal_months > 9';
+        } elseif ($aid_balance == '6-9') {
+            $query = 'SELECT * FROM student WHERE stu_aid_bal_months BETWEEN 6 AND 9';
+        } elseif ($aid_balance == '3-6') {
+            $query = 'SELECT * FROM student WHERE stu_aid_bal_months BETWEEN 3 AND 6';
+        } elseif ($aid_balance == '3-or-less') {
+            $query = 'SELECT * FROM student WHERE stu_aid_bal_months <= 3';
+        }
+        
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $student = $statement->fetchAll();
+        $statement->closeCursor();
     }
 
 
@@ -127,6 +146,18 @@ if (isset($_POST['search-option'])) {
             <div class="form-group">
                 <input type="radio" id="search-non-certified" name="search-option" value="non-certified">
                 <label for="search-non-certified">Search for Non-Certified Students for Current Semester</label>
+            </div>
+
+            <!-- Search by Months of Aid Balance Left -->
+            <div class="form-group">
+                <input type="radio" id="search-months-of-aid" name="search-option" value="aid-balance">
+                <label for="search-months-of-aid">Search by Aid Balance:</label>
+                <select id="aid-balance" name="aid-balance">
+                    <option value="more-than-9">More than 9 months</option>
+                    <option value="6-9">6-9 months</option>
+                    <option value="3-6">3-6 months</option>
+                    <option value="3-or-less">3 months or less</option>
+                </select>
             </div>
             
             <!-- Single Search Button -->
