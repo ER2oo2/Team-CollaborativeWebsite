@@ -26,7 +26,7 @@ $report_results = $_SESSION['reportResults'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Results</title>
+    <title>Veteran DB: Report Results</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         // JavaScript function to print the results

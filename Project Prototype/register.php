@@ -90,7 +90,7 @@ if (isset($register)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>Veteran DB: User Registration</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>

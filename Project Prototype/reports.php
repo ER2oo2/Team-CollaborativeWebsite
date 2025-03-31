@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports</title>
+    <title>Veteran DB: Reports</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         // JavaScript function to print the report

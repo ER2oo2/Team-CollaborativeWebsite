@@ -105,7 +105,7 @@ if (isset($_POST['search-option'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Students</title>
+    <title>Veteran DB: Search Students</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>

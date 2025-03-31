@@ -92,7 +92,7 @@ if (isset($_POST['student-id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Record</title>
+    <title>Veteran DB: New Record</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>

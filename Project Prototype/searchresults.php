@@ -27,7 +27,7 @@ if (isset($_SESSION['searchResults'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
+    <title>Veteran DB: Search Results</title>
     <link rel="stylesheet" href="styles.css">
     <script>
         function toggleSelectAll(source) {

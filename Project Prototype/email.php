@@ -99,7 +99,7 @@ if (isset($_POST['select-student']) && !empty($_POST['select-student'])) {
   
   <main>
       <div class="email-form-container">
-          <h2>Email Students</h2>
+          <h2>Veteran DB: Email Students</h2>
           
           <!-- Display Preselected Student(s) -->
           <div class="preselected-students">
