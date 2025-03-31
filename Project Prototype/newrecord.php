@@ -19,7 +19,7 @@ if (isset($_SESSION['user_session']) || isset($_SESSION['staff'])) {
     header('Location: login.php');
     exit(); 
 }
-var_dump($_POST);
+//var_dump($_POST);
 // Check if form was submitted
 
 
@@ -178,8 +178,11 @@ if (isset($_POST['student-id'])) {
                 <input type="date" id="cert-date" name="cert-date" placeholder="Enter certification date if certified">>
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="option-button">Submit</button>
+            <div style="margin-top: 20px;">
+                <!-- Normal submission button -->
+                <button type="submit" class="option-button" style="width:25%; display:block; margin:0 auto;">Submit</button>
+            </div>
+            
 
             <!-- Required Field Note -->
             <p style="color: red; font-size: 0.9em; margin-top: 10px;">* Required fields</p>

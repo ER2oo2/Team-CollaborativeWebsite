@@ -56,7 +56,7 @@ main {
 
 /* Form Containers */
 .login-form, .form-container, .student-record-container, .email-form-container, .report-parameters-container, .report-results-container {
-    width: 100%;
+    width: 80%;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
