@@ -56,7 +56,7 @@ if (isset($_POST['select-student']) && !empty($_POST['select-student'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Students</title>
+  <title>Veteran DB: Email Students</title>
   <link rel="stylesheet" href="styles.css">
   <script>
     function sendEmail(event) {
@@ -99,7 +99,7 @@ if (isset($_POST['select-student']) && !empty($_POST['select-student'])) {
   
   <main>
       <div class="email-form-container">
-          <h2>Veteran DB: Email Students</h2>
+          <h2>Email Students</h2>
           
           <!-- Display Preselected Student(s) -->
           <div class="preselected-students">

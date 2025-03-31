@@ -50,7 +50,7 @@ if (isset($_SESSION['staff'])) {
             <a href="search.php" class="option-button">Search</a>
             <a href="newrecord.php" class="option-button">Add New Record</a>
             <a href="reports.php" class="option-button">Run a Report</a>
-            <a href="email.php" class="option-button">Send Batch Email</a>
+            <a href="batchemail.php" class="option-button">Send Batch Email</a>
         </div>
     </div>
 </main>

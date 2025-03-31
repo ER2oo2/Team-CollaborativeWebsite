@@ -56,6 +56,8 @@ if (isset($_SESSION['searchResults'])) {
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Certified</th>
+                        <th>Aid Months</th>
+                        <th>Aid Days</th>
                         <th>
                             Select All<br>
                             <input type="checkbox" onclick="toggleSelectAll(this)"> 
@@ -94,6 +96,8 @@ if (isset($_SESSION['searchResults'])) {
                             <td><?php echo htmlspecialchars($student['stu_lname']); ?></td>
                             <td><?php echo htmlspecialchars($student['stu_fname']); ?></td>
                             <td><?php echo $cert_status; ?></td>
+                            <td><?php echo htmlspecialchars($student['stu_aid_bal_months']); ?></td>
+                            <td><?php echo htmlspecialchars($student['stu_aid_bal_days']); ?></td>
                             <td>
                                 <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
                             </td>
@@ -103,9 +107,10 @@ if (isset($_SESSION['searchResults'])) {
             </table>
             <div style="margin-top: 20px;">
                 <!-- Normal submission button -->
-                <button type="submit" class="option-button">Submit</button>
+                <button type="submit" class="option-button">View Student Record</button>
                 <!-- Button for emailing. Note the formaction attribute here. -->
-                <button type="submit" formaction="email.php" class="option-button">Email these Students</button>
+                <button type="submit" formaction="email.php" class="option-button">Email Student(s)</button>
+                <button type="submit" formaction="search.php" class="option-button">New Search</button>
             </div>
         </form>
     </div>
