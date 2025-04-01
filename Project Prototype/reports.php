@@ -11,27 +11,27 @@ if (isset($_SESSION['staff'])) {
     $staff_lname = $_SESSION['staff']['staff_lname'];
     $staff_email = $_SESSION['staff']['staff_email'];
     $staff_role = $_SESSION['staff']['staff_role'];
- } else {
+} else {
      $error = "No user is logged in";
      echo $error;
      header('Location: login.php');
      exit();		
- }
+}
 
-// Get form data
+//Check for form data
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $start_date = $_POST['start-date'];
     $end_date = $_POST['end-date'];
     $cert_status = $_POST['cert-status'];
-    $aid_type = $_POST['aid-type'];
+    $aid_balance = $_POST['aid-balance']; // Retrieve aid balance from the form
 
-
-// Save report parameters to session
+    // Save report parameters to session
     $_SESSION['reportParams'] = [
         'date_range' => "$start_date to $end_date",
         'cert_status' => $cert_status,
-        'aid_type' => $aid_type
+        'aid_balance' => $aid_balance
     ];
+
     // SQL Query
     $query = 'SELECT student.stu_id, student.stu_fname, student.stu_lname, student.stu_email,
                      certification.cert_status, student.stu_aid_bal_months, student.stu_aid_bal_days
@@ -48,8 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($cert_status === 'not-certified') {
         $query .= " AND (certification.cert_status = 0 OR certification.cert_status IS NULL)";
     }
-    if ($aid_type !== 'all') {
-        $query .= " AND student.stu_aid_type = :aid_type";
+    // Add aid balance filter
+    if ($aid_balance === 'more-than-9') {
+        $query .= " AND student.stu_aid_bal_months > 9";
+    } elseif ($aid_balance === '6-9') {
+        $query .= " AND student.stu_aid_bal_months BETWEEN 6 AND 9";
+    } elseif ($aid_balance === '3-6') {
+        $query .= " AND student.stu_aid_bal_months BETWEEN 3 AND 6";
+    } elseif ($aid_balance === '3-or-less') {
+        $query .= " AND student.stu_aid_bal_months <= 3";
     }
 
     // Execute Query
@@ -58,9 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($start_date) && !empty($end_date)) {
         $statement->bindParam(':start_date', $start_date);
         $statement->bindParam(':end_date', $end_date);
-    }
-    if ($aid_type !== 'all') {
-        $statement->bindParam(':aid_type', $aid_type);
     }
 
     $statement->execute();
@@ -126,15 +130,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
 
-                <!-- Aid Type -->
+                <!-- Aid Balance -->
                 <div class="form-group">
-                    <label for="aid-type">Aid Type:</label>
-                    <select id="aid-type" name="aid-type">
+                    <label for="aid-balance">Aid Balance (Months):</label>
+                    <select id="aid-balance" name="aid-balance">
                         <option value="all">All</option>
-                        <option value="911">Post-9/11 GI Bill</option>
-                        <option value="montgomery">Montgomery GI Bill</option>
-                        <option value="va_scholarship">VA Scholorship</option>
-
+                        <option value="more-than-9">More than 9 months</option>
+                        <option value="6-9">6-9 months</option>
+                        <option value="3-6">3-6 months</option>
+                        <option value="3-or-less">3 months or less</option>
                     </select>
                 </div>
 

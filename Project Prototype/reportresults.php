@@ -55,12 +55,12 @@ $report_results = $_SESSION['reportResults'];
 
             <!-- Report Summary -->
             <div class="report-summary">
-                <p><strong>Report Parameters:</strong></p>
-                <ul>
+                <p style='text-align: center;'><strong>Report Parameters:</strong></p>
+                <ul style='text-align: center;'>
                     <?php if (isset($_SESSION['reportParams'])) : ?>
-                        <li><strong>Date Range:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['date_range']); ?></li>
-                        <li><strong>Certification Status:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['cert_status']); ?></li>
-                        <li><strong>Aid Type:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['aid_type']); ?></li>
+                        <li style='display: inline-block; text-align: center;'><strong>Date Range:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['date_range']); ?></li>
+                        <li style='display: inline-block; text-align: center;'><strong>Certification Status:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['cert_status']); ?></li>
+                        <li style='display: inline-block; text-align: center;'><strong>Aid Type:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['aid_balance']); ?></li>
                     <?php else : ?>
                         <li>No report parameters found.</li>
                     <?php endif; ?>
@@ -76,8 +76,7 @@ $report_results = $_SESSION['reportResults'];
                         <th>First Name</th>
                         <th>Email</th>
                         <th>Certification Status</th>
-                        <th>Aid Type</th>
-                        <th>Balance</th>
+                        <th>Aid Balance</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,7 +87,6 @@ $report_results = $_SESSION['reportResults'];
                             <td><?php echo htmlspecialchars($result['stu_fname']); ?></td>
                             <td><?php echo htmlspecialchars($result['stu_email']); ?></td>
                             <td><?php echo ($result['cert_status'] == 1) ? 'Certified' : 'Not Certified'; ?></td>
-                            <td><?php echo htmlspecialchars($result['stu_aid_type']); ?></td>
                             <td><?php echo htmlspecialchars($result['stu_aid_bal_months'] . ' Months, ' . $result['stu_aid_bal_days'] . ' Days'); ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -97,7 +95,7 @@ $report_results = $_SESSION['reportResults'];
 
             <!-- Action Buttons for Results -->
             <div class="results-actions">
-                <button onclick="emailAllResults()" class="option-button">Email these Students</button>
+                <button onclick="emailAllResults()" class="option-button">Email All Students</button>
                 <button onclick="printResults()" class="option-button">Print Results</button>
             </div>
         </div>
