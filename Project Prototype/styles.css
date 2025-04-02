@@ -210,3 +210,11 @@ select {
     border-radius: 5px;
     border: 1px solid #ccc;
 }
+
+#emailDropdown {
+    width: 500px; /* Adjust width as needed */
+    margin: 20px auto; /* Centers the dropdown horizontally */
+    display: block; /* Ensures margin: auto works */
+    padding: 10px; /* Add some padding for better appearance */
+    font-size: 16px; /* Adjust font size if desired */
+}

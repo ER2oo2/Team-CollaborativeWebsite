@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 //checking to see if SESSION variables passed correctly
 if (isset($_SESSION['staff'])) {
-    $staff_id = $_SESSION['staff']['staff_username'];
+    $staff_id = $_SESSION['staff']['staff_id'];
     $staff_fname = $_SESSION['staff']['staff_fname'];
     $staff_lname = $_SESSION['staff']['staff_lname'];
     $staff_email = $_SESSION['staff']['staff_email'];

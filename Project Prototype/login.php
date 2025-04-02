@@ -34,6 +34,7 @@ if (isset($_POST['username'])) {
         if (password_verify($password, $staff['staff_password'])) {
             // Successful login
             $_SESSION['staff'] = array(
+                'staff_id' => $staff['staff_id'],
                 'staff_username' => $staff['staff_username'],
                 'staff_fname' => $staff['staff_fname'],
                 'staff_lname' => $staff['staff_lname'],

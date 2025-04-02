@@ -48,8 +48,14 @@ $statement->bindParam(':student_id', $student_id);
 $statement->execute();
 $certification = $statement->fetch();
 $statement->closeCursor();
-?>
 
+$queryEmails = 'SELECT ets.date_sent, et.tmplt_subject FROM email_to_student ets JOIN email_template et ON ets.tmplt_id = et.tmplt_id WHERE ets.stu_id = :student_id ORDER BY ets.email_id DESC';
+$statementEmails = $db->prepare($queryEmails);
+$statementEmails->bindParam(':student_id', $student_id);
+$statementEmails->execute();
+$emails = $statementEmails->fetchAll(PDO::FETCH_ASSOC);
+$statementEmails->closeCursor();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,6 +111,20 @@ $statement->closeCursor();
             }
         ?>
         </p>
+        <p><strong>Emails Sent to Student:</strong></p>
+        <?php if (!empty($emails)): ?>
+            <select id="emailDropdown">
+              <?php foreach ($emails as $email): ?>
+                  <option>
+                      <?php 
+                      echo htmlspecialchars('Subject: ' . $email['tmplt_subject'] . ' | Sent on: ' . $email['date_sent']);
+                      ?>
+                  </option>
+              <?php endforeach; ?>
+          </select>
+        <?php else: ?>
+            <p>No emails have been sent to this student.</p>
+        <?php endif; ?>
         </div>
         
         <!-- Email Student Button -->
