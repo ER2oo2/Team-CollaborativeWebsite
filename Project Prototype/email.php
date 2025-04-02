@@ -15,12 +15,17 @@ if (!isset($_SESSION['staff'])) {
     exit();
 }
 
-// For debugging, if needed:
-// echo '<pre>'; var_dump($_SESSION['staff']); echo '</pre>';
-
-// Retrieve selected students from session
-$selected_students = isset($_SESSION['selected_students']) ? $_SESSION['selected_students'] : [];
-if (empty($selected_students)) {
+//retrieve the student IDs from the form POST data or session and save as session variable
+if (isset($_POST['select-student'])) {
+    $selected_students = $_POST['select-student'];
+    // Store the selected students in the session.
+    $_SESSION['selected_students'] = $selected_students;
+} elseif (isset($_SESSION['selected_students'])) {
+    // If no POST data is available, retrieve the previously stored selection.
+    $selected_students = $_SESSION['selected_students'];
+    // Optionally, clear the session data after retrieving it to ensure it doesn't persist.
+    //unset($_SESSION['selected_students']);
+} else {
     echo "No students selected for emailing.";
     exit();
 }
@@ -45,6 +50,7 @@ $default_subject   = isset($_SESSION['email_form']['subject']) ? $_SESSION['emai
 $default_body      = isset($_SESSION['email_form']['body']) ? $_SESSION['email_form']['body'] : '';
 $default_template  = isset($_SESSION['email_form']['template_id']) ? $_SESSION['email_form']['template_id'] : 'new';
 
+
 // Process saving a new email template
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_template'])) {
     $subject = $_POST['subject'];
@@ -52,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_template'])) {
     $insertQuery = "INSERT INTO email_template (tmplt_subject, tmplt_body) VALUES (?, ?)";
     $insertStmt = $db->prepare($insertQuery);
     $insertStmt->execute([$subject, $body]);
+    $insertStmt->closeCursor();
     header("Location: email.php"); // Refresh the page to reload template list
     exit();
 }
@@ -85,6 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
         $stmtEmail->closeCursor();
     }
     
+
+
     // Save the current form selections in session so they persist
     $_SESSION['email_form'] = [
         'subject'     => $subject,
@@ -100,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Email Students</title>
+    <title>Veteran DB: Email Students</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Style for form fields and buttons */

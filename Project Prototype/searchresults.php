@@ -20,6 +20,11 @@ if (isset($_SESSION['searchResults'])) {
     echo "No search results found. Please try your search again.";
     exit();
 }
+
+// Store selected students in session if they are selected.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
+    $_SESSION['selected_students'] = $_POST['select-student'];
+}
 ?>
 
 <!DOCTYPE html>

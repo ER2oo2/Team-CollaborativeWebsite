@@ -5,6 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+
 if (isset($_SESSION['staff'])) {
     $staff_id = $_SESSION['staff']['staff_username'];
     $staff_fname = $_SESSION['staff']['staff_fname'];
@@ -21,7 +22,9 @@ if (isset($_SESSION['staff'])) {
 
 // Retrieve stu_id from GET or POST
 $selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-
+if($selectedStudents){
+    $_SESSION['selected_students'] = $selectedStudents;
+}
 // Retrieve the selected student IDs from the form POST data
 $student_id = isset($_GET['stu_id']) ? $_GET['stu_id'] : (isset($_POST['select-student']) ? $_POST['select-student'][0] : null);
 
@@ -128,7 +131,14 @@ $statementEmails->closeCursor();
         </div>
         
         <!-- Email Student Button -->
-        <button class="email-button" onclick="location.href='mailto:<?php echo htmlspecialchars($student['stu_email']); ?>'">Email Student</button>
+        <?php if (!empty($_SESSION['selected_students'])): ?>
+            <form action="email.php" method="post">
+                <?php foreach ($_SESSION['selected_students'] as $stu): ?>
+                    <input type="hidden" name="select-student[]" value="<?php echo htmlspecialchars($stu); ?>">
+                <?php endforeach; ?>
+                <button type="submit" class="email-button">Email Student(s)</button>
+            </form>
+        <?php endif; ?>
         <!-- Update Student Button -->
         <button class="email-button" onclick="location.href='studentupdate.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>'">Update Student</button>
 
