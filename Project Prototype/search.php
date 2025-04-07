@@ -3,51 +3,51 @@
 require_once('dbconnect.php');
 
 //validate if there is a session, if not- start one
-if (session_status() == PHP_SESSION_NONE) { 
+if (session_status() == PHP_SESSION_NONE) {
 session_start();
 }
 
 //checking to see if SESSION variables passed correctly
 if (isset($_SESSION['staff'])) {
-   $staff_id = $_SESSION['staff']['staff_username'];
-   $staff_fname = $_SESSION['staff']['staff_fname'];
-   $staff_lname = $_SESSION['staff']['staff_lname'];
-   $staff_email = $_SESSION['staff']['staff_email'];
-   $staff_role = $_SESSION['staff']['staff_role'];
+    $staff_id = $_SESSION['staff']['staff_username'];
+    $staff_fname = $_SESSION['staff']['staff_fname'];
+    $staff_lname = $_SESSION['staff']['staff_lname'];
+    $staff_email = $_SESSION['staff']['staff_email'];
+    $staff_role = $_SESSION['staff']['staff_role'];
 } else {
-	$error = "No user is logged in";
-	echo $error;
+    $error = "No user is logged in";
+    echo $error;
     header('Location: login.php');
-    exit();		
+    exit();
 }
 
 // Initialize an error message variable
 $searchError = "";
 
-//select search method and store user input 
+//select search method and store user input
 if (isset($_POST['search-option'])) {
     $searchOption = $_POST['search-option'];
 
     if ($searchOption == 'name') {
         $first_name = $_POST['first-name'];
-        $last_name = $_POST['last-name'];     
-        
-       //sql code to search by name
-       $query = 'SELECT * FROM student WHERE stu_fname LIKE :firstName and stu_lname LIKE :lastName';
-       $statement = $db->prepare($query);
-       $first_name_wildcard = '%'.$first_name.'%';
-       $last_name_wildcard = '%'.$last_name.'%';
-       $statement->bindParam(':firstName', $first_name_wildcard);
-       $statement->bindParam(':lastName', $last_name_wildcard); 
-       $statement->execute();
-       $student = $statement->fetchAll();
-       $statement->closeCursor();
+        $last_name = $_POST['last-name'];
+
+        //sql code to search by name
+        $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_fname LIKE :firstName and stu_lname LIKE :lastName';
+        $statement = $db->prepare($query);
+        $first_name_wildcard = '%'.$first_name.'%';
+        $last_name_wildcard = '%'.$last_name.'%';
+        $statement->bindParam(':firstName', $first_name_wildcard);
+        $statement->bindParam(':lastName', $last_name_wildcard);
+        $statement->execute();
+        $student = $statement->fetchAll();
+        $statement->closeCursor();
 
     } elseif ($searchOption == 'id') {
         $student_id = $_POST['student-id'];
 
         //sql code to search by student id
-        $query = 'SELECT * FROM student WHERE stu_id = :student_id';
+        $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_id = :student_id';
         $statement = $db->prepare($query);
         $statement->bindParam(':student_id', $student_id);
         $statement->execute();
@@ -56,10 +56,10 @@ if (isset($_POST['search-option'])) {
 
     } elseif ($searchOption == 'non-certified') {
         //sql code to search for non-certified students for current semester- use left join to include students with no certifications
-        $query = 'SELECT student.stu_id, student.stu_fname, student.stu_lname
-                    FROM student
-                    LEFT JOIN certification ON student.stu_id = certification.stu_id
-                    WHERE certification.cert_status = 0 or certification.cert_status IS NULL';
+        $query = 'SELECT student.stu_id, student.stu_fname, student.stu_lname, student.stu_aid_bal_months, student.stu_aid_bal_days, student.benefit_type_id
+                  FROM student
+                  LEFT JOIN certification ON student.stu_id = certification.stu_id
+                  WHERE certification.cert_status = 0 or certification.cert_status IS NULL';
         $statement = $db->prepare($query);
         $statement->execute();
         $student = $statement->fetchAll();
@@ -67,18 +67,18 @@ if (isset($_POST['search-option'])) {
 
     } elseif ($searchOption == 'aid-balance') {
         $aid_balance = $_POST['aid-balance'];
-    
+
         // Adjust SQL query based on dropdown value with the correct column name:
         if ($aid_balance == 'more-than-9') {
-            $query = 'SELECT * FROM student WHERE stu_aid_bal_months > 9';
+            $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_aid_bal_months > 9';
         } elseif ($aid_balance == '6-9') {
-            $query = 'SELECT * FROM student WHERE stu_aid_bal_months BETWEEN 6 AND 9';
+            $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_aid_bal_months BETWEEN 6 AND 9';
         } elseif ($aid_balance == '3-6') {
-            $query = 'SELECT * FROM student WHERE stu_aid_bal_months BETWEEN 3 AND 6';
+            $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_aid_bal_months BETWEEN 3 AND 6';
         } elseif ($aid_balance == '3-or-less') {
-            $query = 'SELECT * FROM student WHERE stu_aid_bal_months <= 3';
+            $query = 'SELECT stu_id, stu_fname, stu_lname, stu_address, stu_city, stu_state, stu_zip, stu_phone, stu_email, stu_aid_bal_months, stu_aid_bal_days, benefit_type_id FROM student WHERE stu_aid_bal_months <= 3';
         }
-        
+
         $statement = $db->prepare($query);
         $statement->execute();
         $student = $statement->fetchAll();
@@ -120,43 +120,38 @@ if (isset($_POST['search-option'])) {
 <main>
 <div class="search-container">
         <h2>Search Students</h2>
-        <!-- Display error message if set -->
-        <?php 
+        <?php
         if (!empty($searchError)) {
             echo "<p style='color:red;'>$searchError</p>";
         }
         ?>
         <form action="search.php" method="post" class="search-form">
-            
-            <!-- Search by Name -->
+
             <div class="form-group">
                 <input type="radio" id="search-by-name" name="search-option" value="name">
                 <label for="search-by-name">Search by Student Name:</label>
-		<br>&ensp;&ensp;&ensp;&ensp;
+        <br>&ensp;&ensp;&ensp;&ensp;
                 <label for="first-name">First Name:</label>
                 <input type="text" id="first-name" name="first-name" placeholder="Enter first name">
                 <br>&ensp;&ensp;&ensp;&ensp;
-		<label for="last-name">Last Name:</label>
+        <label for="last-name">Last Name:</label>
                 <input type="text" id="last-name" name="last-name" placeholder="Enter last name">
             </div>
-            
-            <!-- Search by Student ID -->
+
             <div class="form-group">
                 <input type="radio" id="search-by-id" name="search-option" value="id">
                 <label for="search-by-id">Search by Student ID:</label>
                 <input type="text" id="student-id" name="student-id" placeholder="Enter student ID">
             </div>
-            
-            <!-- Search for Non-Certified Students for Current Semester -->
+
             <div class="form-group">
                 <input type="radio" id="search-non-certified" name="search-option" value="non-certified">
                 <label for="search-non-certified">Search for Non-Certified Students for Current Semester</label>
             </div>
 
-            <!-- Search by Months of Aid Balance Left -->
             <div class="form-group">
                 <input type="radio" id="search-months-of-aid" name="search-option" value="aid-balance">
-                <label for="search-months-of-aid">Search by Aid Balance:</label>
+                <label for="search-months-of-aid">Search by Benefit Balance:</label>
                 <select id="aid-balance" name="aid-balance">
                     <option value="" disabled selected>Make a selection</option>
                     <option value="more-than-9">More than 9 months</option>
@@ -165,8 +160,7 @@ if (isset($_POST['search-option'])) {
                     <option value="3-or-less">3 months or less</option>
                 </select>
             </div>
-            
-            <!-- Single Search Button -->
+
             <button type="submit" class="option-button">Search</button>
         </form>
     </div>
