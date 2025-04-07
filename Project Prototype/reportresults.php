@@ -103,6 +103,7 @@ $report_results = $_SESSION['reportResults'] ?? [];
                             <th>Email</th>
                             <th>Certification Status</th>
                             <th>Benefit Balance</th>
+
                             <th>
                                 Select All<br>
                                 <input type="checkbox" onclick="toggleSelectAll(this)">
