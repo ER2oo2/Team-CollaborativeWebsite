@@ -59,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query .= " AND student.stu_aid_bal_months <= 3";
     }
 
+    $query .= " GROUP by student.stu_id"; // Group by student ID to avoid duplicates
+    
     // Execute Query
     $statement = $db->prepare($query);
 

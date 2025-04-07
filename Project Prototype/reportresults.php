@@ -85,7 +85,7 @@ $report_results = $_SESSION['reportResults'] ?? [];
                     <?php if (isset($_SESSION['reportParams'])) : ?>
                         <li style='display: inline-block; text-align: center;'><strong>Date Range:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['date_range']); ?></li>
                         <li style='display: inline-block; text-align: center;'><strong>Certification Status:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['cert_status']); ?></li>
-                        <li style='display: inline-block; text-align: center;'><strong>Aid Type:</strong> <?php echo htmlspecialchars($_SESSION['reportParams']['aid_balance']); ?></li>
+                        
                     <?php else : ?>
                         <li>No report parameters found.</li>
                     <?php endif; ?>
@@ -102,7 +102,8 @@ $report_results = $_SESSION['reportResults'] ?? [];
                             <th>First Name</th>
                             <th>Email</th>
                             <th>Certification Status</th>
-                            <th>Aid Balance</th>
+                            <th>Benefit Balance</th>
+
                             <th>
                                 Select All<br>
                                 <input type="checkbox" onclick="toggleSelectAll(this)">

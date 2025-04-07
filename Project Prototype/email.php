@@ -15,20 +15,25 @@ if (!isset($_SESSION['staff'])) {
     exit();
 }
 
-//retrieve the student IDs from the form POST data or session and save as session variable
+// Retrieve the student IDs from the form POST data
 if (isset($_POST['select-student'])) {
     $selected_students = $_POST['select-student'];
-    // Store the selected students in the session.
+    // Store the selected students in the session (optional, but might be useful for subsequent actions)
     $_SESSION['selected_students'] = $selected_students;
 } elseif (isset($_SESSION['selected_students'])) {
     // If no POST data is available, retrieve the previously stored selection.
     $selected_students = $_SESSION['selected_students'];
     // Optionally, clear the session data after retrieving it to ensure it doesn't persist.
-    //unset($_SESSION['selected_students']);
+    // unset($_SESSION['selected_students']);
 } else {
     echo "No students selected for emailing.";
     exit();
 }
+
+// Debugging: Output the selected student IDs
+// echo "<pre>";
+// var_dump($selected_students);
+// echo "</pre>";
 
 // Fetch student details
 $placeholders = implode(',', array_fill(0, count($selected_students), '?'));
@@ -70,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
     // If a template ID is submitted and not "new", use it; otherwise, it will be null.
     $template_id = (isset($_POST['template_id']) && $_POST['template_id'] !== 'new') ? $_POST['template_id'] : null;
     $staff_id = $_SESSION['staff']['staff_id'];
-    $date_sent = date('Y-m-d');
+    $dateTime = new DateTime();
+    $date_sent = $dateTime->format('Y-m-d H:i:s');
 
     // Store email record for each selected student
     foreach ($selected_students as $stu_id) {
@@ -91,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
         }
         $stmtEmail->closeCursor();
     }
-    
 
 
     // Save the current form selections in session so they persist
@@ -100,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
         'body'        => $body,
         'template_id' => isset($_POST['template_id']) ? $_POST['template_id'] : 'new'
     ];
-    
+
     header("Location: email.php"); // Refresh page with selections preserved
     exit();
 }
@@ -192,7 +197,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
                 </p>
             </div>
             <form id="emailForm" action="email.php" method="post">
-                <!-- Preserve the selected student IDs -->
                 <?php if (!empty($selected_students)): ?>
                     <?php foreach ($selected_students as $stu): ?>
                         <input type="hidden" name="selected_students[]" value="<?php echo htmlspecialchars($stu); ?>">
@@ -218,13 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
                     <textarea id="body" name="body" rows="10" required><?php echo htmlspecialchars($default_body); ?></textarea>
                 </div>
                 <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
-                    <!-- Save as Template -->
                     <button type="submit" class="option-button" name="save_template"><span>Save as Template</span></button>
-                    <!-- Save to Student (records email to the database) -->
                     <button type="submit" class="option-button" name="save_to_database" id="saveToStudentButton"><span>Save to Record(s)</span></button>
-                    <!-- Send Email (opens the mail client via mailto link) -->
                     <button type="button" class="option-button" id="sendEmailButton" onclick="sendEmail()"><span>Send Email</span></button>
-                    <!-- Back to Search -->
                     <a href="batchemail.php" class="option-button"><span>Back to Search</span></a>
                 </div>
             </form>

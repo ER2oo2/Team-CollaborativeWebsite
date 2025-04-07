@@ -1,7 +1,8 @@
 <?php
+date_default_timezone_set('America/New_York');
 require_once('dbconnect.php');
 
-if (session_status() === PHP_SESSION_NONE) { 
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -12,17 +13,17 @@ if (isset($_SESSION['staff'])) {
     $staff_lname = $_SESSION['staff']['staff_lname'];
     $staff_email = $_SESSION['staff']['staff_email'];
     $staff_role = $_SESSION['staff']['staff_role'];
- } else {
-     $error = "No user is logged in";
-     echo $error;
-     header('Location: login.php');
-     exit();	
- }
+} else {
+    $error = "No user is logged in";
+    echo $error;
+    header('Location: login.php');
+    exit();
+}
 
 
 // Retrieve stu_id from GET or POST
 $selectedStudents = filter_input(INPUT_POST, 'select-student', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-if($selectedStudents){
+if ($selectedStudents) {
     $_SESSION['selected_students'] = $selectedStudents;
 }
 // Retrieve the selected student IDs from the form POST data
@@ -36,7 +37,11 @@ if (!$student_id) {
 // Debug output
 //echo "Student ID passed to this page: " . htmlspecialchars($student_id);
 
-$query = 'SELECT * FROM student WHERE stu_id = :student_id';
+// Modified query to join with the benefit table
+$query = 'SELECT s.*, b.benefit_type AS stu_benefit_type
+          FROM student s
+          LEFT JOIN benefit b ON s.benefit_type_id = b.benefit_type_id
+          WHERE s.stu_id = :student_id';
 $statement = $db->prepare($query);
 $statement->bindParam(':student_id', $student_id);
 $statement->execute();
@@ -44,15 +49,21 @@ $student = $statement->fetch();
 $statement->closeCursor();
 
 
-// Query the database for details
-$query = 'SELECT * FROM certification WHERE stu_id = :student_id ORDER BY cert_date DESC LIMIT 1';
-$statement = $db->prepare($query);
-$statement->bindParam(':student_id', $student_id);
-$statement->execute();
-$certification = $statement->fetch();
-$statement->closeCursor();
+// Query for all certification dates for the student
+$queryCertDates = 'SELECT cert_date FROM certification WHERE stu_id = :student_id ORDER BY cert_date DESC';
+$statementCertDates = $db->prepare($queryCertDates);
+$statementCertDates->bindParam(':student_id', $student_id);
+$statementCertDates->execute();
+$certificationDates = $statementCertDates->fetchAll(PDO::FETCH_COLUMN);
+$statementCertDates->closeCursor();
 
-$queryEmails = 'SELECT ets.date_sent, et.tmplt_subject FROM email_to_student ets JOIN email_template et ON ets.tmplt_id = et.tmplt_id WHERE ets.stu_id = :student_id ORDER BY ets.email_id DESC';
+// Modified query to join with the staff table
+$queryEmails = 'SELECT ets.date_sent, et.tmplt_subject, s.staff_username
+                  FROM email_to_student ets
+                  JOIN email_template et ON ets.tmplt_id = et.tmplt_id
+                  JOIN staff s ON ets.staff_id = s.staff_id
+                  WHERE ets.stu_id = :student_id
+                  ORDER BY ets.email_id DESC';
 $statementEmails = $db->prepare($queryEmails);
 $statementEmails->bindParam(':student_id', $student_id);
 $statementEmails->execute();
@@ -61,93 +72,107 @@ $statementEmails->closeCursor();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veteran DB: Student Record</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header>
-    <img src="PennWestLogo.png" alt="PennWest University Logo">
-    <span>PennWest Financial Aid Veteran’s Database</span>
-</header>
+    <header>
+        <img src="PennWestLogo.png" alt="PennWest University Logo">
+        <span>PennWest Financial Aid Veteran’s Database</span>
+    </header>
 
-<?php include 'navbar.php'; ?>
+    <?php include 'navbar.php'; ?>
+    <h1 style="text-align: center; color:black;">Student Record</h1>
+    <main>
+        <div class="student-record-container">
 
-<main>
-    <div class="student-record-container">
-        <h2>Student Record</h2>
-        <div class="student-details">
-            <p><strong>Student ID:</strong> <?php echo htmlspecialchars($student['stu_id']); ?></p>
-            <p><strong>First Name:</strong> <?php echo htmlspecialchars($student['stu_fname']); ?></p>
-            <p><strong>Last Name:</strong> <?php echo htmlspecialchars($student['stu_lname']); ?></p>
-            <p><strong>Address:</strong> <?php echo htmlspecialchars($student['stu_address']); ?></p>
-            <p><strong>City:</strong> <?php echo htmlspecialchars($student['stu_city']); ?></p>
-            <p><strong>State:</strong> <?php echo htmlspecialchars($student['stu_state']); ?></p>
-            <p><strong>Zip Code:</strong> <?php echo htmlspecialchars($student['stu_zip']); ?></p>
-            <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($student['stu_phone']); ?></p>
-            <p><strong>Email:</strong> <?php echo htmlspecialchars($student['stu_email']); ?></p>
-            <p><strong>Balance:</strong> <?php echo htmlspecialchars($student['stu_aid_bal_months'] . ' Months, ' . $student['stu_aid_bal_days'] . ' Days'); ?></p>
-            <p><strong>Certification Status:</strong>       
-            <?php 
-                if ($certification && isset($certification['cert_status'])) {
-                    echo $certification['cert_status'] == 1 ? 'Certified' : 'Not Certified';
-                } else {
-                    echo 'N/A';
-                }
-            ?>
-            </p>
-            <p><strong>Aid Balance:</strong></p>
+            <div class="student-details">
+                <p><strong>Student ID:</strong> <?php echo htmlspecialchars($student['stu_id']); ?></p>
+                <p><strong>First Name:</strong> <?php echo htmlspecialchars($student['stu_fname']); ?></p>
+                <p><strong>Last Name:</strong> <?php echo htmlspecialchars($student['stu_lname']); ?></p>
+                <p><strong>Address:</strong> <?php echo htmlspecialchars($student['stu_address']); ?></p>
+                <p><strong>City:</strong> <?php echo htmlspecialchars($student['stu_city']); ?></p>
+                <p><strong>State:</strong> <?php echo htmlspecialchars($student['stu_state']); ?></p>
+                <p><strong>Zip Code:</strong> <?php echo htmlspecialchars($student['stu_zip']); ?></p>
+                <p><strong>Phone Number:</strong> <?php echo htmlspecialchars($student['stu_phone']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($student['stu_email']); ?></p>
+                <p><strong>Benefit Type:</strong> <?php echo htmlspecialchars($student['stu_benefit_type']); ?></p>
+                <p><strong>Certification Status:</strong>
+                    <?php
+                    if ($certificationDates) {
+                        echo htmlspecialchars($certificationDates[0] ? 'Certified (as of ' . date('m-d-Y', strtotime($certificationDates[0])) . ')' : 'Not Certified');
+                    } else {
+                        echo 'No Certifications';
+                    }
+                    ?>
+                </p>
+                <p><strong>Benefit Balance:</strong></p>
                 <p>
                     Months: <?php echo htmlspecialchars($student['stu_aid_bal_months']); ?>
                     Days: <?php echo htmlspecialchars($student['stu_aid_bal_days']); ?>
                 </p>
-            </p>
-            <p><strong>Certification Date:</strong> 
-            <?php 
-            if ($certification && isset($certification['cert_date'])) {
-                echo htmlspecialchars($certification['cert_date']);
-            } else {
-                echo 'N/A';
-            }
-        ?>
-        </p>
-        <p><strong>Emails Sent to Student:</strong></p>
-        <?php if (!empty($emails)): ?>
-            <select id="emailDropdown">
-              <?php foreach ($emails as $email): ?>
-                  <option>
-                      <?php 
-                      echo htmlspecialchars('Subject: ' . $email['tmplt_subject'] . ' | Sent on: ' . $email['date_sent']);
-                      ?>
-                  </option>
-              <?php endforeach; ?>
-          </select>
-        <?php else: ?>
-            <p>No emails have been sent to this student.</p>
-        <?php endif; ?>
+                </p>
+
+                <p><strong>Certification Dates:</strong></p>
+                <?php if (!empty($certificationDates)): ?>
+                    <select id="cDropdown">
+                        <?php foreach ($certificationDates as $date): ?>
+                            <option><?php echo htmlspecialchars(date('m-d-Y', strtotime($date))); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <p>No Certifications available for this student.</p>
+                <?php endif; ?>
+
+                <p><strong>Emails Sent to Student:</strong></p>
+                <?php if (!empty($emails)): ?>
+                    <select id="emailDropdown">
+                        <?php foreach ($emails as $email): ?>
+                            <option>
+                                <?php
+                                $dateTime = new DateTime($email['date_sent'], new DateTimeZone('UTC'));
+                                // Convert the time to Eastern Time:
+                                $dateTime->setTimezone(new DateTimeZone('America/New_York'));
+                                echo htmlspecialchars('Subject: ' . $email['tmplt_subject'] . ' | Sent: ' . $dateTime->format('m-d-Y h:i:s A') . ' | Sent by: ' . $email['staff_username']);
+                                ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                <?php else: ?>
+                    <p>No emails have been sent to this student.</p>
+                <?php endif; ?>
+            </div>
+
+            <?php if ($student): ?>
+                <form action="email.php" method="post">
+                    <input type="hidden" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
+                    <button type="submit" class="email-button">Email Student(s)</button>
+                </form>
+            <?php endif; ?>
+            <button class="email-button" onclick="location.href='studentupdate.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>'">Update Student</button>
+
         </div>
-        
-        <!-- Email Student Button -->
-        <?php if (!empty($_SESSION['selected_students'])): ?>
-            <form action="email.php" method="post">
-                <?php foreach ($_SESSION['selected_students'] as $stu): ?>
-                    <input type="hidden" name="select-student[]" value="<?php echo htmlspecialchars($stu); ?>">
-                <?php endforeach; ?>
-                <button type="submit" class="email-button">Email Student(s)</button>
-            </form>
-        <?php endif; ?>
-        <!-- Update Student Button -->
-        <button class="email-button" onclick="location.href='studentupdate.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>'">Update Student</button>
+    </main>
 
-    </div>
-</main>
+    <footer>
+        Pennsylvania Western University
+    </footer>
 
-<footer>
-    Pennsylvania Western University
-</footer>
-
+    <script>
+        document.getElementById("benefitType").addEventListener("change", function() {
+            if (this.value === "other") {
+                document.getElementById("newBenefitDiv").style.display = "block";
+            } else {
+                document.getElementById("newBenefitDiv").style.display = "none";
+            }
+        });
+    </script>
 </body>
+
 </html>
