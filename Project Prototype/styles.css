@@ -212,9 +212,29 @@ select {
 }
 
 #emailDropdown {
-    width: 500px; /* Adjust width as needed */
-    margin: 20px auto; /* Centers the dropdown horizontally */
-    display: block; /* Ensures margin: auto works */
-    padding: 10px; /* Add some padding for better appearance */
-    font-size: 16px; /* Adjust font size if desired */
+    width: 700px; 
+    margin: 20px auto; 
+    display: block; 
+    padding: 2px; 
+    font-size: 16px; 
+}
+
+#cDropdown {
+    width: 500px; 
+    margin: 20px auto; 
+    display: block; 
+    padding: 2px; 
+    font-size: 16px; 
+}
+
+#newBenefitDiv {
+    display: none;
+    margin-top: 10px;
+    text-align: center; /* Center the label and input horizontally */
+}
+
+#newBenefitDiv label,
+#newBenefitDiv input[type="text"] {
+    display: inline-block; /* Allows them to be centered by text-align */
+    margin: 5px; /* Add some spacing */
 }

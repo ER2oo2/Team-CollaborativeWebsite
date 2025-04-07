@@ -1,7 +1,7 @@
 <?php
 require_once('dbconnect.php');
 
-if (session_status() == PHP_SESSION_NONE) { 
+if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
@@ -19,10 +19,12 @@ $searchError = "";
 
 // Handle the search form submission
 if (isset($_POST['search'])) {
-    $cert_status_selected = $_POST['cert_status'];  
-    $aid_balance_selected = $_POST['aid_balance'];  
+    $cert_status_selected = $_POST['cert_status'];
+    $aid_balance_selected = $_POST['aid_balance'];
 
     $conditions = [];
+    $joinClause = "LEFT JOIN benefit b ON s.benefit_type_id = b.benefit_type_id";
+    $whereClause = "WHERE UPPER(b.benefit_type) <> 'INACTIVE'"; // Start with the inactive filter
 
     if ($cert_status_selected === "certified") {
         $conditions[] = "c.cert_status = 1";
@@ -40,13 +42,12 @@ if (isset($_POST['search'])) {
         $conditions[] = "s.stu_aid_bal_months <= 3";
     }
 
-    $whereClause = "";
     if (!empty($conditions)) {
-        $whereClause = "WHERE " . implode(" AND ", $conditions);
+        $whereClause .= " AND (" . implode(" AND ", $conditions) . ")";
     }
 
-    // Fetch students based on conditions
-    $query = "SELECT DISTINCT s.* FROM student s LEFT JOIN certification c ON s.stu_id = c.stu_id $whereClause";
+    // Fetch students based on conditions, excluding inactive
+    $query = "SELECT DISTINCT s.* FROM student s LEFT JOIN certification c ON s.stu_id = c.stu_id $joinClause $whereClause";
     $statement = $db->prepare($query);
     $statement->execute();
     $searchResults = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -116,7 +117,7 @@ if (isset($_POST['select-student'])) {
 
         <?php if (!empty($searchResults)): ?>
             <form action="" method="post">
-                <h2 style='text-align: center'>Search Results</h2> 
+                <h2 style='text-align: center'>Search Results</h2>
                 <table>
                     <thead>
                         <tr>
@@ -138,7 +139,7 @@ if (isset($_POST['select-student'])) {
                                 <td><?php echo htmlspecialchars($student['stu_email']); ?></td>
                                 <td>
                                     <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>"
-                                    <?php echo isset($_SESSION['selected_students']) && in_array($student['stu_id'], $_SESSION['selected_students']) ? 'checked' : ''; ?>>
+                                        <?php echo isset($_SESSION['selected_students']) && in_array($student['stu_id'], $_SESSION['selected_students']) ? 'checked' : ''; ?>>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

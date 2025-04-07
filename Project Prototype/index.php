@@ -15,6 +15,9 @@ if (isset($_SESSION['staff'])) {
     $staff_role = $_SESSION['staff']['staff_role'];
  } else {
      $error = "No user is logged in";
+     echo $error;
+     header('Location: login.php');
+     exit();
 }	
  ?>
 
