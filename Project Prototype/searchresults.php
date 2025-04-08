@@ -79,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
                         <th>Certified</th>
                         <th>Benefit Months</th>
                         <th>Benefit Days</th>
+                        <th>Benefit Type</th>
                         <th>
                             Select All<br>
                             <input type="checkbox" onclick="toggleSelectAll(this)">
@@ -127,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
                                 <td><?php echo $cert_status; ?></td>
                                 <td><?php echo htmlspecialchars($student['stu_aid_bal_months']); ?></td>
                                 <td><?php echo htmlspecialchars($student['stu_aid_bal_days']); ?></td>
+                                <td><?php echo htmlspecialchars($student['benefit_type']); ?></td>
                                 <td>
                                     <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
                                 </td>

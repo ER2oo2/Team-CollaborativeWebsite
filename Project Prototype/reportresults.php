@@ -24,30 +24,8 @@ $report_results = $_SESSION['reportResults'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
     $_SESSION['selected_students'] = $_POST['select-student'];
 }
-?>
 
-<?php
-require_once('dbconnect.php');
 
-if (session_status() == PHP_SESSION_NONE) { 
-    session_start();
-}
-
-if (isset($_SESSION['staff'])) {
-    $staff_id = $_SESSION['staff']['staff_username'];
-    $staff_fname = $_SESSION['staff']['staff_fname'];
-    $staff_lname = $_SESSION['staff']['staff_lname'];
-    $staff_email = $_SESSION['staff']['staff_email'];
-    $staff_role = $_SESSION['staff']['staff_role'];
-} else {
-    $error = "No user is logged in";
-    echo $error;
-    header('Location: login.php');
-    exit();		
-}
-
-// Retrieve report
-$report_results = $_SESSION['reportResults'] ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -103,6 +81,7 @@ $report_results = $_SESSION['reportResults'] ?? [];
                             <th>Email</th>
                             <th>Certification Status</th>
                             <th>Benefit Balance</th>
+                            <th>Benefitt Type</th>
 
                             <th>
                                 Select All<br>
@@ -119,6 +98,7 @@ $report_results = $_SESSION['reportResults'] ?? [];
                                 <td><?php echo htmlspecialchars($result['stu_email']); ?></td>
                                 <td><?php echo ($result['cert_status'] == 1) ? 'Certified' : 'Not Certified'; ?></td>
                                 <td><?php echo htmlspecialchars($result['stu_aid_bal_months'] . ' Months, ' . $result['stu_aid_bal_days'] . ' Days'); ?></td>
+                                <td><?php echo htmlspecialchars($result['benefit_type']); ?></td>
                                 <td>
                                     <input type="checkbox" name="select-student[]" value="<?php echo htmlspecialchars($result['stu_id']); ?>" checked>
                                 </td>

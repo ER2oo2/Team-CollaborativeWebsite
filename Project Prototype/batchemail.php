@@ -15,16 +15,26 @@ if (!isset($_SESSION['staff'])) {
 $searchResults = [];
 $cert_status_selected = "";
 $aid_balance_selected = "";
+$benefit_type_selected = ""; // Add benefit type variable
 $searchError = "";
+
+// Fetch available benefit types for the dropdown
+$query = "SELECT benefit_type_id, benefit_type FROM benefit WHERE UPPER(benefit_type) <> 'INACTIVE' ORDER BY benefit_type";
+$statement = $db->prepare($query);
+$statement->execute();
+$benefitTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
+$statement->closeCursor();
 
 // Handle the search form submission
 if (isset($_POST['search'])) {
     $cert_status_selected = $_POST['cert_status'];
     $aid_balance_selected = $_POST['aid_balance'];
+    $benefit_type_selected = $_POST['benefit_type']; // Retrieve selected benefit type
 
     $conditions = [];
-    $joinClause = "LEFT JOIN benefit b ON s.benefit_type_id = b.benefit_type_id";
-    $whereClause = "WHERE UPPER(b.benefit_type) <> 'INACTIVE'"; // Start with the inactive filter
+    $joinClause = "LEFT JOIN certification c ON s.stu_id = c.stu_id
+                   LEFT JOIN benefit b ON s.benefit_type_id = b.benefit_type_id";
+    $whereClause = "WHERE UPPER(b.benefit_type) <> 'INACTIVE'"; // Filter out inactive benefits
 
     if ($cert_status_selected === "certified") {
         $conditions[] = "c.cert_status = 1";
@@ -42,13 +52,23 @@ if (isset($_POST['search'])) {
         $conditions[] = "s.stu_aid_bal_months <= 3";
     }
 
+    if (!empty($benefit_type_selected)) {
+        $conditions[] = "b.benefit_type_id = :benefit_type"; // Add benefit type filter
+    }
+
     if (!empty($conditions)) {
         $whereClause .= " AND (" . implode(" AND ", $conditions) . ")";
     }
 
-    // Fetch students based on conditions, excluding inactive
-    $query = "SELECT DISTINCT s.* FROM student s LEFT JOIN certification c ON s.stu_id = c.stu_id $joinClause $whereClause";
+    // Fetch students based on conditions
+    $query = "SELECT DISTINCT s.* FROM student s $joinClause $whereClause";
     $statement = $db->prepare($query);
+
+    // Bind the benefit type parameter if selected
+    if (!empty($benefit_type_selected)) {
+        $statement->bindParam(':benefit_type', $benefit_type_selected, PDO::PARAM_INT);
+    }
+
     $statement->execute();
     $searchResults = $statement->fetchAll(PDO::FETCH_ASSOC);
     $statement->closeCursor();
@@ -64,9 +84,11 @@ if (isset($_POST['select-student'])) {
     header('Location: email.php');
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Email Students - Advanced Search</title>
@@ -78,6 +100,7 @@ if (isset($_POST['select-student'])) {
         }
     </script>
 </head>
+
 <body>
     <header>
         <img src="PennWestLogo.png" alt="PennWest University Logo">
@@ -99,13 +122,25 @@ if (isset($_POST['select-student'])) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="aid_balance">Aid Balance:</label>
+                    <label for="aid_balance">Benefit Balance:</label>
                     <select id="aid_balance" name="aid_balance">
                         <option value="">--------</option>
                         <option value="more-than-9" <?php if ($aid_balance_selected === "more-than-9") echo "selected"; ?>>More than 9 months</option>
                         <option value="6-9" <?php if ($aid_balance_selected === "6-9") echo "selected"; ?>>6-9 months</option>
                         <option value="3-6" <?php if ($aid_balance_selected === "3-6") echo "selected"; ?>>3-6 months</option>
                         <option value="3-or-less" <?php if ($aid_balance_selected === "3-or-less") echo "selected"; ?>>3 months or less</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="benefit_type">Benefit Type:</label>
+                    <select id="benefit_type" name="benefit_type">
+                        <option value="">--------</option>
+                        <?php foreach ($benefitTypes as $type): ?>
+                            <option value="<?php echo htmlspecialchars($type['benefit_type_id']); ?>"
+                                <?php if ($benefit_type_selected == $type['benefit_type_id']) echo "selected"; ?>>
+                                <?php echo htmlspecialchars($type['benefit_type']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <button type="submit" name="search" class="option-button">Search</button>
@@ -154,4 +189,5 @@ if (isset($_POST['select-student'])) {
         Pennsylvania Western University
     </footer>
 </body>
+
 </html>

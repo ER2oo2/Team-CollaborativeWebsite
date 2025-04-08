@@ -254,6 +254,9 @@ $statementBenefitTypes->closeCursor();
     document.addEventListener('DOMContentLoaded', function() {
         var benefitTypeDropdown = document.getElementById("benefit_type_id");
         var newBenefitDiv = document.getElementById("newBenefitDiv");
+        var certStatusDropdown = document.getElementById("cert-status");
+        var certDateInput = document.getElementById("cert-date");
+        var newRecordForm = document.querySelector(".new-record-form");
 
         if (benefitTypeDropdown) {
             benefitTypeDropdown.addEventListener("change", function() {
@@ -261,6 +264,15 @@ $statementBenefitTypes->closeCursor();
                     newBenefitDiv.style.display = "block";
                 } else {
                     newBenefitDiv.style.display = "none";
+                }
+            });
+        }
+
+        if (newRecordForm) {
+            newRecordForm.addEventListener("submit", function(event) {
+                if (certStatusDropdown.value === "1" && certDateInput.value === "") {
+                    alert("Please enter the Certification Date when the Certification Status is 'Yes'.");
+                    event.preventDefault(); // Prevent the form from submitting
                 }
             });
         }
