@@ -123,7 +123,9 @@ $statementEmails->closeCursor();
                 <?php if (!empty($certificationDates)): ?>
                     <select id="cDropdown">
                         <?php foreach ($certificationDates as $date): ?>
-                            <option><?php echo htmlspecialchars(date('m-d-Y', strtotime($date))); ?></option>
+                            <?php if ($date !== null): ?>
+                                <option><?php echo htmlspecialchars(date('m-d-Y', strtotime($date))); ?></option>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
                 <?php else: ?>

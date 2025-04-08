@@ -42,10 +42,15 @@ if (isset($_POST['student-id'])) {
     $new_benefit_type = $_POST['new_benefit_type'];
 
 
+    // Validate certification date requirement
+    if ($cert_status == 1 && empty($cert_date)) {
+        die('Certification date is required when certification status is "Yes".');
+    }
 
     // If cert_status is "0" (Not Certified), set cert_date to null
     if ($cert_status == 0) {
     $cert_date = null;
+    
     }
 
     $final_benefit_type_id = $benefit_type_id;
@@ -209,9 +214,9 @@ $statementBenefitTypes->closeCursor();
                     <?php foreach ($benefitTypes as $type): ?>
                         <option value="<?php echo htmlspecialchars($type['benefit_type_id']); ?>"><?php echo htmlspecialchars($type['benefit_type']); ?></option>
                     <?php endforeach; ?>
-                    <option value="new">-- Add New Benefit Type --</option>
+                    <option style= "text-align: left;" value="new">-- Add New Benefit Type --</option>
                 </select>
-                <div id="newBenefitDiv" style="display: none;">
+                <div id="newBenefitDiv" style="display: none; text-align: left;"">
                     <label for="new_benefit_type">New Benefit Type:</label>
                     <input type="text" id="new_benefit_type" name="new_benefit_type">
                 </div>
