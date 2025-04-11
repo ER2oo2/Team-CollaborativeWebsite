@@ -46,7 +46,7 @@ if (isset($_SESSION['staff'])) {
   </h1>
 <main>
 
-
+<!-- Buttons for easy page navigation -->
     <div class="options-container">
         <h2>Select an Action</h2>
         <div class="option-buttons">

@@ -30,11 +30,6 @@ if (isset($_POST['select-student'])) {
     exit();
 }
 
-// Debugging: Output the selected student IDs
-// echo "<pre>";
-// var_dump($selected_students);
-// echo "</pre>";
-
 // Fetch student details
 $placeholders = implode(',', array_fill(0, count($selected_students), '?'));
 $query = "SELECT * FROM student WHERE stu_id IN ($placeholders)";
@@ -189,19 +184,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
             <div class="preselected-students">
                 <h3>Selected Student(s):</h3>
                 <p>
-                    <?php
+                    
+                    <?php //Display the list of selected students
                     echo !empty($students)
                         ? implode(', ', array_map(fn($s) => htmlspecialchars($s['stu_fname'] . ' ' . $s['stu_lname'] . ' (' . $s['stu_email'] . ')'), $students))
                         : "No students selected.";
                     ?>
                 </p>
             </div>
+            <!-- Email Form -->
             <form id="emailForm" action="email.php" method="post">
                 <?php if (!empty($selected_students)): ?>
                     <?php foreach ($selected_students as $stu): ?>
                         <input type="hidden" name="selected_students[]" value="<?php echo htmlspecialchars($stu); ?>">
                     <?php endforeach; ?>
                 <?php endif; ?>
+                <!-- Template Select -->
                 <div class="form-group">
                     <label for="template_id">Select Template:</label>
                     <select id="template_id" name="template_id" onchange="onTemplateChange()">
@@ -213,14 +211,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_to_database'])) 
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <!-- Subject box -->
                 <div class="form-group">
                     <label for="subject">Subject:</label>
                     <input type="text" id="subject" name="subject" required value="<?php echo htmlspecialchars($default_subject); ?>">
                 </div>
+                <!-- Email Body -->
                 <div class="form-group">
                     <label for="body">Email Body:</label>
                     <textarea id="body" name="body" rows="10" required><?php echo htmlspecialchars($default_body); ?></textarea>
                 </div>
+                <!-- Buttons -->
                 <div class="form-group" style="display: flex; justify-content: center; align-items: center;">
                     <button type="submit" class="option-button" name="save_template"><span>Save as Template</span></button>
                     <button type="submit" class="option-button" name="save_to_database" id="saveToStudentButton"><span>Save to Record(s)</span></button>

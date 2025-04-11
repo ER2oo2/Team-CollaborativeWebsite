@@ -90,6 +90,7 @@ $statementEmails->closeCursor();
     <?php include 'navbar.php'; ?>
     <h1 style="text-align: center; color:black;">Student Record</h1>
     <main>
+        <!-- Display the details of teh student -->
         <div class="student-record-container">
 
             <div class="student-details">
@@ -104,7 +105,7 @@ $statementEmails->closeCursor();
                 <p><strong>Email:</strong> <?php echo htmlspecialchars($student['stu_email']); ?></p>
                 <p><strong>Benefit Type:</strong> <?php echo htmlspecialchars($student['stu_benefit_type']); ?></p>
                 <p><strong>Certification Status:</strong>
-                    <?php
+                    <?php //display certification status and date if available
                     if ($certificationDates) {
                         echo htmlspecialchars($certificationDates[0] ? 'Certified (as of ' . date('m-d-Y', strtotime($certificationDates[0])) . ')' : 'Not Certified');
                     } else {
@@ -114,11 +115,13 @@ $statementEmails->closeCursor();
                 </p>
                 <p><strong>Benefit Balance:</strong></p>
                 <p>
+                    <!-- Display Remaining Benefit Balance -->
                     Months: <?php echo htmlspecialchars($student['stu_aid_bal_months']); ?>
                     Days: <?php echo htmlspecialchars($student['stu_aid_bal_days']); ?>
                 </p>
                 </p>
-
+                
+                <!-- Date(s) the student was certified -->
                 <p><strong>Certification Dates:</strong></p>
                 <?php if (!empty($certificationDates)): ?>
                     <select id="cDropdown">
@@ -131,7 +134,8 @@ $statementEmails->closeCursor();
                 <?php else: ?>
                     <p>No Certifications available for this student.</p>
                 <?php endif; ?>
-
+                
+                <!-- List of recorded emails that were sent to the student -->
                 <p><strong>Emails Sent to Student:</strong></p>
                 <?php if (!empty($emails)): ?>
                     <select id="emailDropdown">
@@ -151,6 +155,7 @@ $statementEmails->closeCursor();
                 <?php endif; ?>
             </div>
 
+            <!-- Action Buttons -->
             <?php if ($student): ?>
                 <form action="email.php" method="post">
                     <input type="hidden" name="select-student[]" value="<?php echo htmlspecialchars($student['stu_id']); ?>">
@@ -166,7 +171,7 @@ $statementEmails->closeCursor();
         Pennsylvania Western University
     </footer>
 
-    <script>
+    <script>//Handle students with a Benefit type of "other"
         document.getElementById("benefitType").addEventListener("change", function() {
             if (this.value === "other") {
                 document.getElementById("newBenefitDiv").style.display = "block";
