@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veteran DB: Search Results</title>
     <link rel="stylesheet" href="styles.css">
-    <script>
+    <script>//Select all checkbox (none selected by default)
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('input[name="select-student[]"]');
             checkboxes.forEach(checkbox => checkbox.checked = source.checked);
@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
 <?php include 'navbar.php'; ?>
 
 <main>
+    <!-- Search Results -->
     <div class="results-container">
         <h2>Search Results</h2>
         <form action="studentrecord.php" method="post">
@@ -117,6 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
                                 $cert_status = 'Y';
                             }
                         ?>
+                        <!-- Display each row of student information -->
                             <tr>
                                 <td>
                                     <a href="studentrecord.php?stu_id=<?php echo htmlspecialchars($student['stu_id']); ?>">
@@ -137,9 +139,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
                     <?php endif; ?>
                 </tbody>
             </table>
+            <!-- Action Buttons -->
             <div style="margin-top: 20px;">
+                <!-- View the record of first selected student -->
                 <button type="submit" class="option-button">View Student Record</button>
+
+                <!-- Email all selected students -->
                 <button type="submit" formaction="email.php" class="option-button">Email Student(s)</button>
+
+                <!-- Go back to Search page -->
                 <button type="submit" formaction="search.php" class="option-button">New Search</button>
             </div>
         </form>

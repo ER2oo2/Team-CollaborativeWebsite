@@ -113,6 +113,7 @@ if (isset($_POST['select-student'])) {
         <div class="search-container">
             <h2>Select Certification Status or Aid Balance</h2>
             <form action="" method="post">
+                <!-- Certification Status dropdown -->
                 <div class="form-group">
                     <label for="cert_status">Certification Status:</label>
                     <select id="cert_status" name="cert_status">
@@ -121,6 +122,7 @@ if (isset($_POST['select-student'])) {
                         <option value="not-certified" <?php if ($cert_status_selected === "not-certified") echo "selected"; ?>>Not Certified</option>
                     </select>
                 </div>
+                <!-- Benefit Balance dropdown -->
                 <div class="form-group">
                     <label for="aid_balance">Benefit Balance:</label>
                     <select id="aid_balance" name="aid_balance">
@@ -131,6 +133,7 @@ if (isset($_POST['select-student'])) {
                         <option value="3-or-less" <?php if ($aid_balance_selected === "3-or-less") echo "selected"; ?>>3 months or less</option>
                     </select>
                 </div>
+                <!-- Benefit Type dropdown -->
                 <div class="form-group">
                     <label for="benefit_type">Benefit Type:</label>
                     <select id="benefit_type" name="benefit_type">
@@ -150,6 +153,7 @@ if (isset($_POST['select-student'])) {
             <?php endif; ?>
         </div>
 
+        <!-- Post the search results -->
         <?php if (!empty($searchResults)): ?>
             <form action="" method="post">
                 <h2 style='text-align: center'>Search Results</h2>

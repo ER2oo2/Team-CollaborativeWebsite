@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="date" id="start-date" name="start-date">
                 </div>
 
+                <!-- End Date -->
                 <div class="form-group">
                     <label for="end-date">End Date:</label>
                     <input type="date" id="end-date" name="end-date">

@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veteran DB: Report Results</title>
     <link rel="stylesheet" href="styles.css">
-    <script>
+    <script>//Select all box (all selected by default)
         function toggleSelectAll(source) {
             const checkboxes = document.querySelectorAll('input[name="select-student[]"]');
             checkboxes.forEach(checkbox => checkbox.checked = source.checked);
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select-student'])) {
     <main>
         <div class="report-results-container">
             <h2>Report Results</h2>
-
+            <!-- Display the Parameters, Date Range, and Certification Status -->
             <div class="report-summary">
                 <p style='text-align: center;'><strong>Report Parameters:</strong></p>
                 <ul style='text-align: center;'>

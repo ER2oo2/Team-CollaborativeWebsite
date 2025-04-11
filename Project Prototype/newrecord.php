@@ -211,6 +211,7 @@ $statementBenefitTypes->closeCursor();
                 <label for="benefit_type_id">Benefit Type:</label>
                 <select id="benefit_type_id" name="benefit_type_id">
                     <option value="">-- Select Benefit Type --</option>
+                    <!-- Get the Benefit Types -->
                     <?php foreach ($benefitTypes as $type): ?>
                         <option value="<?php echo htmlspecialchars($type['benefit_type_id']); ?>"><?php echo htmlspecialchars($type['benefit_type']); ?></option>
                     <?php endforeach; ?>
@@ -250,7 +251,7 @@ $statementBenefitTypes->closeCursor();
     Pennsylvania Western University
 </footer>
 
-<script>
+<script>//Handle required fields
     document.addEventListener('DOMContentLoaded', function() {
         var benefitTypeDropdown = document.getElementById("benefit_type_id");
         var newBenefitDiv = document.getElementById("newBenefitDiv");

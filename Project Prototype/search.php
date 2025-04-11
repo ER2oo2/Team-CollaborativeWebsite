@@ -136,8 +136,9 @@ if (isset($_POST['search-option'])) {
                 echo "<p style='color:red;'>$searchError</p>";
             }
             ?>
+            <!-- Search Form -->
             <form action="search.php" method="post" class="search-form">
-
+                <!-- Search by name -->
                 <div class="form-group">
                     <input type="radio" id="search-by-name" name="search-option" value="name">
                     <label for="search-by-name">Search by Student Name:</label>
@@ -149,17 +150,21 @@ if (isset($_POST['search-option'])) {
                     <input type="text" id="last-name" name="last-name" placeholder="Enter last name">
                 </div>
 
+                <!-- Search by Student ID -->
                 <div class="form-group">
                     <input type="radio" id="search-by-id" name="search-option" value="id">
                     <label for="search-by-id">Search by Student ID:</label>
                     <input type="text" id="student-id" name="student-id" placeholder="Enter student ID">
                 </div>
 
+
+                <!-- Search all Non-Certified Students -->
                 <div class="form-group">
                     <input type="radio" id="search-non-certified" name="search-option" value="non-certified">
                     <label for="search-non-certified">Search for Non-Certified Students for Current Semester</label>
                 </div>
 
+                <!-- Search by Benefit Balance -->
                 <div class="form-group">
                     <input type="radio" id="search-months-of-aid" name="search-option" value="aid-balance">
                     <label for="search-months-of-aid">Search by Benefit Balance:</label>
@@ -171,6 +176,8 @@ if (isset($_POST['search-option'])) {
                         <option value="3-or-less">3 months or less</option>
                     </select>
                 </div>
+
+                <!-- Search by Benefit type -->
                 <div class="form-group">
                     <input type="radio" id="search-by-benefit-type" name="search-option" value="benefit-type">
                     <label for="search-by-benefit-type">Search by Benefit Type:</label>
