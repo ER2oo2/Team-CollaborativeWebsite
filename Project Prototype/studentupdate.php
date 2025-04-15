@@ -54,15 +54,6 @@ $statementBenefitTypes->closeCursor();
 // Handle form submission for updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_student'])) {
     // Sanitize and retrieve student input values... (as in the previous correct versions)
-<<<<<<< HEAD
-    $stu_fname = filter_input(INPUT_POST, 'stu_fname');
-    $stu_lname = filter_input(INPUT_POST, 'stu_lname');
-    $stu_address = filter_input(INPUT_POST, 'stu_address');
-    $stu_city = filter_input(INPUT_POST, 'stu_city');
-    $stu_state = filter_input(INPUT_POST, 'stu_state');
-    $stu_zip = filter_input(INPUT_POST, 'stu_zip');
-    $stu_phone = filter_input(INPUT_POST, 'stu_phone');
-=======
     $stu_fname = filter_input(INPUT_POST, 'stu_fname', FILTER_SANITIZE_STRING);
     $stu_lname = filter_input(INPUT_POST, 'stu_lname', FILTER_SANITIZE_STRING);
     $stu_address = filter_input(INPUT_POST, 'stu_address', FILTER_SANITIZE_STRING);
@@ -70,16 +61,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_student'])) {
     $stu_state = filter_input(INPUT_POST, 'stu_state', FILTER_SANITIZE_STRING);
     $stu_zip = filter_input(INPUT_POST, 'stu_zip', FILTER_SANITIZE_STRING);
     $stu_phone = filter_input(INPUT_POST, 'stu_phone', FILTER_SANITIZE_STRING);
->>>>>>> bf92ed9f4398afd516f71b8c4da23dffd512ceb5
     $stu_email = filter_input(INPUT_POST, 'stu_email', FILTER_SANITIZE_EMAIL);
     $stu_aid_bal_months = filter_input(INPUT_POST, 'stu_aid_bal_months', FILTER_SANITIZE_NUMBER_INT);
     $stu_aid_bal_days = filter_input(INPUT_POST, 'stu_aid_bal_days', FILTER_SANITIZE_NUMBER_INT);
     $benefit_type_id = $_POST['benefit_type_id'];
-<<<<<<< HEAD
-    $new_benefit_type = filter_input(INPUT_POST, 'new_benefit_type');
-=======
     $new_benefit_type = filter_input(INPUT_POST, 'new_benefit_type', FILTER_SANITIZE_STRING);
->>>>>>> bf92ed9f4398afd516f71b8c4da23dffd512ceb5
     $cert_status = filter_input(INPUT_POST, 'cert_status', FILTER_SANITIZE_NUMBER_INT);
     $cert_date = filter_input(INPUT_POST, 'cert_date');
 

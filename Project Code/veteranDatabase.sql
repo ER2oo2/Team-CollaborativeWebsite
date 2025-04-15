@@ -72,3 +72,6 @@ CREATE TABLE email_to_student(
 
 /* Automatically insert the 'INACTIVE' benefit type */
 INSERT INTO benefit (benefit_type) VALUES ('INACTIVE');
+
+INSERT INTO staff (staff_id, staff_username, staff_password, staff_fname, staff_lname, staff_email, staff_role) VALUES
+                  (12345678, 'test', '$2y$10$.fmIxS0q9LPGCqQjI/o7YOB8VmHZ.lAYnLwHz6KAzKtSxsHB2ySHG', 'test', 'test', 'test@test.com', 'Admin')  
