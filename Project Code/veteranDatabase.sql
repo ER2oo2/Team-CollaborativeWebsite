@@ -66,7 +66,7 @@ CREATE TABLE email_to_student(
     tmplt_id INT,
     date_sent DATETIME,
     FOREIGN KEY (stu_id) REFERENCES student(stu_id) ON DELETE CASCADE, 
-    FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE CASCADE, 
+    FOREIGN KEY (staff_id) REFERENCES staff(staff_id) ON DELETE SET NULL, 
     FOREIGN KEY (tmplt_id) REFERENCES email_template(tmplt_id) ON DELETE CASCADE
 );
 

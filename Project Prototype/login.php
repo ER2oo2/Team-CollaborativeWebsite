@@ -84,7 +84,7 @@ if (isset($_POST['username'])) {
 
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register.php">Register here</a></p>
+        <p>Don't have an account? Ask an Admin to make one for you!</a></p>
     </div>
     
 </main>
