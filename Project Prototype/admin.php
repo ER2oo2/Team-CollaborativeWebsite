@@ -40,22 +40,26 @@ if (isset($_POST['delete_student']) && isset($_POST['stu_id'])) {
 }
 
 // Default sort by last name
-$sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'stu_lname'; // Default to 'stu_lname'
-$sort_order = isset($_GET['sort_order']) && $_GET['sort_order'] == 'desc' ? 'desc' : 'asc'; // Default to 'asc'
+$sort_by = isset($_GET['sort_by']) ? $_GET['sort_by'] : 'stu_lname'; 
+$sort_order = isset($_GET['sort_order']) && $_GET['sort_order'] == 'desc' ? 'desc' : 'asc'; 
 
 // Get the search query (if any)
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Modify the query to include last email sent date and handle search
+// Modify the query to include last email sent date and handle search, include only most recent certification status
 $query = "
-    SELECT s.stu_id, s.stu_fname, s.stu_lname, b.benefit_type, c.cert_status,
+    SELECT s.stu_id, s.stu_fname, s.stu_lname, b.benefit_type,
+            (Select cert_status 
+             FROM certification 
+             WHERE stu_id = s.stu_id
+             ORDER BY cert_date DESC
+             LIMIT 1) AS cert_status,
            MAX(ets.date_sent) AS last_email_sent
     FROM student s
     LEFT JOIN benefit b ON s.benefit_type_id = b.benefit_type_id
-    LEFT JOIN certification c ON s.stu_id = c.stu_id
     LEFT JOIN email_to_student ets ON s.stu_id = ets.stu_id
     WHERE s.stu_fname LIKE :search_query OR s.stu_lname LIKE :search_query
-    GROUP BY s.stu_id, s.stu_fname, s.stu_lname, b.benefit_type, c.cert_status
+    GROUP BY s.stu_id, s.stu_fname, s.stu_lname, b.benefit_type
     ORDER BY $sort_by $sort_order
 ";
 $statement = $db->prepare($query);

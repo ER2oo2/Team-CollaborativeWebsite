@@ -127,7 +127,7 @@ if (isset($register)) {
 
     <main>
         <div class="form-container" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
-            <h2 style="text-align: center";>Create a New User</h2>
+            <h2 style="text-align: center" ;>Create a New User</h2>
             <form action="register.php" method="post" class="new-record-form">
 
                 <div class="form-group">
@@ -184,7 +184,7 @@ if (isset($register)) {
 
         <!-- Display existing users for deletion -->
         <div class="form-container" style="border: 1px solid #ccc; padding: 10px; margin: 10px;">
-            <h2 style="text-align: center" ;>Delete Users</h2>
+            <h2 style="text-align: center" ;>Manage Users</h2>
 
             <table>
                 <tr>
@@ -199,9 +199,14 @@ if (isset($register)) {
                         <td><?php echo htmlspecialchars($staff['staff_username']); ?></td>
                         <td><?php echo htmlspecialchars($staff['staff_role']); ?></td>
                         <td>
-                            <form action="deleteuser.php" method="post">
+                            <form action="updateuser.php" method="post">
                                 <input type="hidden" name="staff_id" value="<?php echo htmlspecialchars($staff['staff_id']); ?>">
-                                <button type="submit">Delete</button>
+                                <?php if ($staff['staff_role'] === 'Admin' || $staff['staff_role'] === 'Support Staff'): ?>
+                                    <button type="submit" name="action" value="inactive">Make Inactive</button>
+                                <?php elseif ($staff['staff_role'] === 'Inactive'): ?>
+                                    <button type="submit" name="action" value="admin">Make Admin</button>
+                                    <button type="submit" name="action" value="support">Make Support Staff</button>
+                                <?php endif; ?>
                             </form>
                         </td>
                     </tr>

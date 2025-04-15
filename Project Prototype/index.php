@@ -55,7 +55,7 @@ if (isset($_SESSION['staff'])) {
             <a href="reports.php" class="option-button">Run a Report</a>
             <a href="batchemail.php" class="option-button">Send Batch Email</a>
             <?php if ($staff_role === 'Admin'): ?>
-               <a href="register.php" class="option-button">Add or Remove Users</a>
+               <a href="register.php" class="option-button">Add and Update Users</a>
             <?php endif; ?>
         </div>
     </div>

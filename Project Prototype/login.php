@@ -17,7 +17,7 @@ if (isset($_SESSION['staff'])) {
 if (isset($_POST['username'])) {
     // Retrieve user input (email and password)
     $username = filter_input(INPUT_POST, 'username');
-    $password = filter_input(INPUT_POST,'password');
+    $password = filter_input(INPUT_POST, 'password');
 
     // Query the database to check if the provided email exists and matches the password
     $query = 'SELECT staff_id, staff_username, staff_password, staff_fname, staff_lname, staff_email, staff_role
@@ -28,28 +28,36 @@ if (isset($_POST['username'])) {
     $statement->execute();
     $staff = $statement->fetch();
     $statement->closeCursor();
-	
+
+    //Check to see if the user is inactive
     if ($staff) {
-        // Verify the entered password against the stored hashed password contained in $user['password']
-        if (password_verify($password, $staff['staff_password'])) {
-            // Successful login
-            $_SESSION['staff'] = array(
-                'staff_id' => $staff['staff_id'],
-                'staff_username' => $staff['staff_username'],
-                'staff_fname' => $staff['staff_fname'],
-                'staff_lname' => $staff['staff_lname'],
-                'staff_email' => $staff['staff_email'],
-                'staff_role' => $staff['staff_role']
-            );
-            header('Location: index.php');
+        if ($staff['staff_role'] === 'Inactive') {
+            header('Location: login.php?error=Your account is inactive. Please contact an administrator.');
             exit();
+        }
+
+        if ($staff) {
+            // Verify the entered password against the stored hashed password contained in $user['password']
+            if (password_verify($password, $staff['staff_password'])) {
+                // Successful login
+                $_SESSION['staff'] = array(
+                    'staff_id' => $staff['staff_id'],
+                    'staff_username' => $staff['staff_username'],
+                    'staff_fname' => $staff['staff_fname'],
+                    'staff_lname' => $staff['staff_lname'],
+                    'staff_email' => $staff['staff_email'],
+                    'staff_role' => $staff['staff_role']
+                );
+                header('Location: index.php');
+                exit();
+            } else {
+                $error_message = 'Invalid login credentials';
+                echo $error_message;
+            }
         } else {
             $error_message = 'Invalid login credentials';
-			echo $error_message;
+            echo $error_message;
         }
-    } else {
-        $error_message = 'Invalid login credentials';
-		echo $error_message;
     }
 }
 ?>
@@ -57,41 +65,49 @@ if (isset($_POST['username'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Veteran DB: Login Screen</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
-<header>
-    <img src="PennWestLogo.png" alt="PennWest University Logo">
-    <span>PennWest Financial Aid Veteran’s Database</span>
-</header>
+    <header>
+        <img src="PennWestLogo.png" alt="PennWest University Logo">
+        <span>PennWest Financial Aid Veteran’s Database</span>
+    </header>
 
-<?php include 'navbar.php'; ?>
+    <?php include 'navbar.php'; ?>
 
-<main>
-    <div class="login-form">
-        <h2>Login</h2>
-        <form action="#" method="post">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required>
+    <?php if (isset($_GET['error'])): ?>
+        <p class="error"><?php echo htmlspecialchars($_GET['error']); ?></p>
+    <?php endif; ?>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
 
-            <button type="submit">Login</button>
-        </form>
-        <p>Don't have an account? Ask an Admin to make one for you!</a></p>
-    </div>
-    
-</main>
+    <main>
+        <div class="login-form">
+            <h2>Login</h2>
+            <form action="#" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
 
-<footer>
-    Pennsylvania Western University
-</footer>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? Ask an Admin to make one for you!</a></p>
+        </div>
+
+    </main>
+
+    <footer>
+        Pennsylvania Western University
+    </footer>
 
 </body>
+
 </html>
